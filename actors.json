@@ -1,77 +1,1027 @@
 [
   {
-    "id": "BOT_00",
+    "id": "BOT_01",
     "class_id": "BOT",
     "class_name": "Bot Ağı",
-    "name": "Bot Ağı (Minimal)",
+    "name": "Senkron Bot Kümesi A",
     "clues": [
       {
-        "text": "Aynı metin + link 30 hesapta <2 dk içinde paylaşıldı.",
+        "text": "Aynı metin + URL, 50+ hesapta 1–3 dk içinde paylaşıldı.",
         "reliability": "High",
         "type": "behavioral",
-        "rationale": "Eşzamanlılık otomasyonu işaret eder."
+        "rationale": "Saniye-düzeyi eşzamanlılık otomasyonu işaret eder."
       },
       {
-        "text": "Hesapların çoğu aynı hafta açılmış.",
+        "text": "Hesapların %60+’ı aynı hafta açılmış.",
         "reliability": "Medium",
         "type": "operational",
         "rationale": "Toplu kurulum paterni."
       },
       {
-        "text": "Gece-gündüz paylaşım temposu sabit.",
-        "reliability": "High",
+        "text": "Paylaşım temposu 24/7 düz; durak yok.",
+        "reliability": "Medium",
         "type": "behavioral",
-        "rationale": "İnsan ritminden bağımsızdır."
+        "rationale": "İnsan ritminden bağımsız döngü."
       },
       {
-        "text": "Yanıtlar kalıp ifadelerden oluşuyor.",
-        "reliability": "Low",
-        "type": "content",
-        "rationale": "Düşük bağlamsal tepki."
-      },
-      {
-        "text": "Biyografiler boş/tek kelime.",
+        "text": "Profil biyografileri tek kelime/emoji.",
         "reliability": "Low",
         "type": "operational",
         "rationale": "Hızlı kurulum izi."
+      },
+      {
+        "text": "Yorumlarda tekrarlanan kalıp cümleler.",
+        "reliability": "Low",
+        "type": "content",
+        "rationale": "Düşük bağlam anlama."
       }
     ]
   },
   {
-    "id": "TROLL_00",
-    "class_id": "TROLL",
-    "class_name": "Trol Çiftliği",
-    "name": "Trol Çiftliği (Minimal)",
+    "id": "BOT_02",
+    "class_id": "BOT",
+    "class_name": "Bot Ağı",
+    "name": "Trend Şişirme Grubu B",
     "clues": [
       {
-        "text": "Hedefe özgü lakap/mem üretiliyor.",
-        "reliability": "Medium",
-        "type": "content",
-        "rationale": "İnsan yaratıcılığı ve bağlam."
-      },
-      {
-        "text": "Uzun yanıt dizileriyle tartışma dağıtılıyor.",
+        "text": "Hashtag ilk 10 dk’da 200+ benzer gönderiyle şişirildi.",
         "reliability": "High",
         "type": "behavioral",
-        "rationale": "Etkileşim derinliği yüksek."
+        "rationale": "Anlık hacim patlaması bot dalgası göstergesi."
       },
       {
-        "text": "Vardiya paternleri (akşam/hafta içi) görülüyor.",
+        "text": "Kullanıcı adlarında rastgele sayı kuyrukları yaygın.",
+        "reliability": "Medium",
+        "type": "operational",
+        "rationale": "Toplu üretim kalıbı."
+      },
+      {
+        "text": "Takip–takipçi oranları tutarsız ve birbirine benzer.",
+        "reliability": "Medium",
+        "type": "network",
+        "rationale": "Yapay ağ dokusu."
+      },
+      {
+        "text": "Gönderilerde aynı kısaltma ve imla hatası var.",
+        "reliability": "Low",
+        "type": "content",
+        "rationale": "Şablon metin izleri."
+      },
+      {
+        "text": "Medya ekleri tekrar eden stok görsellerden oluşuyor.",
+        "reliability": "Low",
+        "type": "content",
+        "rationale": "Otomatikleştirilmiş seçim."
+      }
+    ]
+  },
+  {
+    "id": "BOT_03",
+    "class_id": "BOT",
+    "class_name": "Bot Ağı",
+    "name": "Çoklu Platform Bot Seti C",
+    "clues": [
+      {
+        "text": "3 platformda aynı anda kimliksiz hesaplarla çapraz paylaşım.",
+        "reliability": "High",
+        "type": "behavioral",
+        "rationale": "Koordine otomasyon işareti."
+      },
+      {
+        "text": "Hesap adları ardışık seriler (user341, user342...).",
+        "reliability": "Medium",
+        "type": "operational",
+        "rationale": "Seri üretim modeli."
+      },
+      {
+        "text": "Etiket kullanımı aşırı ve tekrarlı.",
+        "reliability": "Medium",
+        "type": "content",
+        "rationale": "Şablon tetikleme denemesi."
+      },
+      {
+        "text": "DM/yorum etkileşimi yok denecek kadar az.",
+        "reliability": "Low",
+        "type": "behavioral",
+        "rationale": "İnsan diyaloğu eksikliği."
+      },
+      {
+        "text": "Profil görselleri stok/varsayılan.",
+        "reliability": "Low",
+        "type": "operational",
+        "rationale": "Hızlı kurulum."
+      }
+    ]
+  },
+  {
+    "id": "TROLL_01",
+    "class_id": "TROLL",
+    "class_name": "Trol Çiftliği",
+    "name": "Provokasyon Ekibi Alfa",
+    "clues": [
+      {
+        "text": "Uzun tartışma dizileri açarak mevzuyu dağıtıyor.",
+        "reliability": "High",
+        "type": "behavioral",
+        "rationale": "Diyalog derinliği ve amaçlı sapma."
+      },
+      {
+        "text": "Vardiya benzeri zamanlama (akşam yoğun, sabah durağan).",
         "reliability": "Medium",
         "type": "behavioral",
-        "rationale": "Çalışma ritmi izi."
+        "rationale": "İnsan iş akışı izi."
       },
       {
-        "text": "Karşı argüman taklidi ve yeniden çerçeveleme.",
+        "text": "Karşı argümanları taklit edip yeniden çerçeveliyor.",
         "reliability": "Medium",
         "type": "content",
         "rationale": "Anlık bağlam takibi."
       },
       {
-        "text": "Hesap yaşı dağılımı karışık.",
+        "text": "Hedefe özgü alaycı lakap/mem üretimi.",
+        "reliability": "Low",
+        "type": "content",
+        "rationale": "Duygu kışkırtma odaklı."
+      },
+      {
+        "text": "Hesap yaşları farklı; eski/yeninin karışımı.",
         "reliability": "Low",
         "type": "operational",
-        "rationale": "Gerçekçi profil demeti."
+        "rationale": "Gerçekçi demet oluşturma."
+      }
+    ]
+  },
+  {
+    "id": "TROLL_02",
+    "class_id": "TROLL",
+    "class_name": "Trol Çiftliği",
+    "name": "Yönlendirme Hücresi Beta",
+    "clues": [
+      {
+        "text": "Birden fazla konuda eşzamanlı tartışma kontrolü.",
+        "reliability": "High",
+        "type": "behavioral",
+        "rationale": "Koordine insan ekibi işareti."
+      },
+      {
+        "text": "Sık ‘whataboutism’ ve konuyu saptırma hamleleri.",
+        "reliability": "Medium",
+        "type": "content",
+        "rationale": "İkna yerine kafa karıştırma."
+      },
+      {
+        "text": "Yeni açılan hesaplar eski çekirdek hesapları etiketliyor.",
+        "reliability": "Medium",
+        "type": "network",
+        "rationale": "Çekirdek-uydu örgütlenmesi."
+      },
+      {
+        "text": "Mem’lerde yerel dil ve argo kullanımı yüksek.",
+        "reliability": "Low",
+        "type": "content",
+        "rationale": "İnsan üretimi üslup."
+      },
+      {
+        "text": "Görsel mizah ve ironi yoğun.",
+        "reliability": "Low",
+        "type": "content",
+        "rationale": "Hedefe özgü uyarlama."
+      }
+    ]
+  },
+  {
+    "id": "TROLL_03",
+    "class_id": "TROLL",
+    "class_name": "Trol Çiftliği",
+    "name": "Çatışma Yükseltme Takımı",
+    "clues": [
+      {
+        "text": "Karşı tarafın hassas konularına seri yorum bombardımanı.",
+        "reliability": "High",
+        "type": "behavioral",
+        "rationale": "Duygu yükseltme stratejisi."
+      },
+      {
+        "text": "Gece yarısı pikleri, hafta içi düzenli vardiya.",
+        "reliability": "Medium",
+        "type": "behavioral",
+        "rationale": "Planlı iş ritmi."
+      },
+      {
+        "text": "Rakip söylemi ‘parodi’ ederek itibarsızlaştırma.",
+        "reliability": "Medium",
+        "type": "content",
+        "rationale": "Bağlam farkındalığı."
+      },
+      {
+        "text": "Farklı hesaplardan aynı mem şablonu varyantları.",
+        "reliability": "Low",
+        "type": "content",
+        "rationale": "Atölye üretimi izlenimi."
+      },
+      {
+        "text": "Takipçi artışı ani dalgalar halinde.",
+        "reliability": "Low",
+        "type": "network",
+        "rationale": "Koordine çekim etkisi."
+      }
+    ]
+  },
+  {
+    "id": "STATE_MEDIA_01",
+    "class_id": "STATE_MEDIA",
+    "class_name": "Devlet Destekli Medya",
+    "name": "Kamu Yayın Ağı 1",
+    "clues": [
+      {
+        "text": "Kurumsal künye ve sahiplik beyanı açık.",
+        "reliability": "High",
+        "type": "operational",
+        "rationale": "Kurumsal yayıncılık göstergesi."
+      },
+      {
+        "text": "Resmî kaynak/duyuru oranı çok yüksek.",
+        "reliability": "Medium",
+        "type": "content",
+        "rationale": "Devlet anlatısı merkezde."
+      },
+      {
+        "text": "Stüdyo üretimli paket içerikler.",
+        "reliability": "Medium",
+        "type": "operational",
+        "rationale": "Profesyonel yayıncılık izi."
+      },
+      {
+        "text": "Uluslararası edisyonlarla eşgüdümlü yayın penceresi.",
+        "reliability": "Low",
+        "type": "behavioral",
+        "rationale": "Ağ senkronu."
+      },
+      {
+        "text": "Editoryal kurul ve iletişim kanalları listelenmiş.",
+        "reliability": "Low",
+        "type": "operational",
+        "rationale": "Kurumsal şeffaflık."
+      }
+    ]
+  },
+  {
+    "id": "STATE_MEDIA_02",
+    "class_id": "STATE_MEDIA",
+    "class_name": "Devlet Destekli Medya",
+    "name": "Resmî Haber Portalı 2",
+    "clues": [
+      {
+        "text": "Kamu politikalarıyla uyumlu başlık çerçeveleri.",
+        "reliability": "High",
+        "type": "content",
+        "rationale": "Resmî anlatı dizilimi."
+      },
+      {
+        "text": "Basın toplantısı/kamu ajansı referans yoğunluğu.",
+        "reliability": "Medium",
+        "type": "content",
+        "rationale": "Kaynak tipi homojen."
+      },
+      {
+        "text": "Kurumsal sosyal medya çapraz paylaşımları.",
+        "reliability": "Medium",
+        "type": "behavioral",
+        "rationale": "Ağ eşgüdümü."
+      },
+      {
+        "text": "Stil rehberi ve yayın ilkeleri kurumsal sayfada.",
+        "reliability": "Low",
+        "type": "operational",
+        "rationale": "Kurumsallaşma."
+      },
+      {
+        "text": "Sunucu/ankraj kadrosu sabit ve resmî etkin.",
+        "reliability": "Low",
+        "type": "operational",
+        "rationale": "Kurumsal kadro."
+      }
+    ]
+  },
+  {
+    "id": "STATE_MEDIA_03",
+    "class_id": "STATE_MEDIA",
+    "class_name": "Devlet Destekli Medya",
+    "name": "Ulusal Ajans 3",
+    "clues": [
+      {
+        "text": "Devlet kurumlarına atıf oranı sektörel ortalamanın çok üstünde.",
+        "reliability": "High",
+        "type": "content",
+        "rationale": "Kaynak bağımlılığı."
+      },
+      {
+        "text": "Zaman damgalı bültenler ve eşzamanlı yayın akışları.",
+        "reliability": "Medium",
+        "type": "behavioral",
+        "rationale": "Kurumsal dağıtım disiplini."
+      },
+      {
+        "text": "Stüdyo/field paketleri aynı grafik şablonlarıyla.",
+        "reliability": "Medium",
+        "type": "operational",
+        "rationale": "Kurumsal prodüksiyon."
+      },
+      {
+        "text": "Uluslararası içeriklerde resmî çeviri kullanımı.",
+        "reliability": "Low",
+        "type": "content",
+        "rationale": "Merkezî çeviri."
+      },
+      {
+        "text": "Yayın yönetmeliği/şikâyet hattı açık.",
+        "reliability": "Low",
+        "type": "operational",
+        "rationale": "Kurumsal süreç."
+      }
+    ]
+  },
+  {
+    "id": "AGENCY_01",
+    "class_id": "AGENCY",
+    "class_name": "Kampanya Ajansı",
+    "name": "Performans Ekibi X",
+    "clues": [
+      {
+        "text": "Reklam kitaplığında aynı kampanya kimliğiyle 20+ kreatif varyant.",
+        "reliability": "High",
+        "type": "operational",
+        "rationale": "A/B test ve ölçekli yürütüm."
+      },
+      {
+        "text": "UTM parametreli linklerle dönüşüm izleme yapılıyor.",
+        "reliability": "Medium",
+        "type": "operational",
+        "rationale": "Performans ölçümü odağı."
+      },
+      {
+        "text": "Hedefleme segmentleri (yaş/ilgi) sık değişiyor.",
+        "reliability": "Medium",
+        "type": "behavioral",
+        "rationale": "Optimizasyon döngüsü."
+      },
+      {
+        "text": "Kreatiflerde tutarlı marka kılavuzu.",
+        "reliability": "Low",
+        "type": "content",
+        "rationale": "Kurumsal tasarım disiplinı."
+      },
+      {
+        "text": "Bağış/üyelik sayfasına düzenli yönlendirme.",
+        "reliability": "Low",
+        "type": "behavioral",
+        "rationale": "KPI odaklı akış."
+      }
+    ]
+  },
+  {
+    "id": "AGENCY_02",
+    "class_id": "AGENCY",
+    "class_name": "Kampanya Ajansı",
+    "name": "Mikro-Hedefleme Hücresi Y",
+    "clues": [
+      {
+        "text": "Aynı mesajın 5–6 farklı görsel/başlık kombinasyonu testte.",
+        "reliability": "High",
+        "type": "operational",
+        "rationale": "Çoklu varyant testleri."
+      },
+      {
+        "text": "‘Bağış yap’, ‘Gönüllü ol’ çağrıları performans izli.",
+        "reliability": "Medium",
+        "type": "behavioral",
+        "rationale": "Dönüşüm hunisi işareti."
+      },
+      {
+        "text": "Hedef kitlelerde konum/ilgi/yaş kırılımları yoğun.",
+        "reliability": "Medium",
+        "type": "operational",
+        "rationale": "Mikro hedefleme."
+      },
+      {
+        "text": "Metinlerde net aksiyon çağrıları.",
+        "reliability": "Low",
+        "type": "content",
+        "rationale": "Pazarlama üslubu."
+      },
+      {
+        "text": "Zamanlama zirveleri kampanya takvimine uyumlu.",
+        "reliability": "Low",
+        "type": "behavioral",
+        "rationale": "Planlı yürütüm."
+      }
+    ]
+  },
+  {
+    "id": "AGENCY_03",
+    "class_id": "AGENCY",
+    "class_name": "Kampanya Ajansı",
+    "name": "Yaratıcı Stüdyo Z",
+    "clues": [
+      {
+        "text": "Platform reklam kitaplığında müşteri etiketiyle çoklu setler.",
+        "reliability": "High",
+        "type": "operational",
+        "rationale": "Resmî ajans yürütümü."
+      },
+      {
+        "text": "Kreatifler hızla döngüye sokulup düşük performanslılar kesiliyor.",
+        "reliability": "Medium",
+        "type": "behavioral",
+        "rationale": "Performans optimizasyonu."
+      },
+      {
+        "text": "Hedefleme denemelerinde lookalike segmentleri kullanımı.",
+        "reliability": "Medium",
+        "type": "operational",
+        "rationale": "Kitle modelleme."
+      },
+      {
+        "text": "Tasarım dili tutarlı; tipografi/renk şeması sabit.",
+        "reliability": "Low",
+        "type": "content",
+        "rationale": "Marka kılavuzu."
+      },
+      {
+        "text": "Linkler izleme parametreleri içeriyor.",
+        "reliability": "Low",
+        "type": "operational",
+        "rationale": "Analitik bütünlüğü."
+      }
+    ]
+  },
+  {
+    "id": "GRASS_01",
+    "class_id": "GRASS",
+    "class_name": "Gönüllü Partizan Topluluk",
+    "name": "Mahalle İnisiyatifi 1",
+    "clues": [
+      {
+        "text": "Saha etkinliği saatleriyle çevrimiçi paylaşım dalgaları örtüşüyor.",
+        "reliability": "High",
+        "type": "behavioral",
+        "rationale": "Yerel etkinlik → çevrimiçi yankı."
+      },
+      {
+        "text": "İçerik üslubu platforma göre farklılaşıyor.",
+        "reliability": "Medium",
+        "type": "content",
+        "rationale": "Merkezî komutsuz çeşitlilik."
+      },
+      {
+        "text": "Merkezî ‘komut’ hesabı görünmüyor.",
+        "reliability": "Medium",
+        "type": "network",
+        "rationale": "Gevşek ağ yapısı."
+      },
+      {
+        "text": "Görseller farklı telefonlardan, farklı kalitede.",
+        "reliability": "Low",
+        "type": "content",
+        "rationale": "Organik üretim izleri."
+      },
+      {
+        "text": "Yerel mizah/sloganlar değişken.",
+        "reliability": "Low",
+        "type": "content",
+        "rationale": "Topluluk içi çeşitlilik."
+      }
+    ]
+  },
+  {
+    "id": "GRASS_02",
+    "class_id": "GRASS",
+    "class_name": "Gönüllü Partizan Topluluk",
+    "name": "Üniversite Ağı 2",
+    "clues": [
+      {
+        "text": "Farklı hesaplar aynı etkinlikten farklı açılardan içerik paylaşıyor.",
+        "reliability": "High",
+        "type": "behavioral",
+        "rationale": "Yerel katılımın çokluğu."
+      },
+      {
+        "text": "Hashtag kullanımı düzensiz ama olaylarla tetikleniyor.",
+        "reliability": "Medium",
+        "type": "behavioral",
+        "rationale": "Organik zamanlama."
+      },
+      {
+        "text": "Ağ analizinde çok merkezli dağınık yapı.",
+        "reliability": "Medium",
+        "type": "network",
+        "rationale": "Merkezsiz örgütlenme."
+      },
+      {
+        "text": "Grafik şablonları tutarlı değil.",
+        "reliability": "Low",
+        "type": "content",
+        "rationale": "Gönüllü üretim."
+      },
+      {
+        "text": "Çağrılar çoğunlukla yerel faaliyetlere.",
+        "reliability": "Low",
+        "type": "content",
+        "rationale": "Saha odaklılık."
+      }
+    ]
+  },
+  {
+    "id": "GRASS_03",
+    "class_id": "GRASS",
+    "class_name": "Gönüllü Partizan Topluluk",
+    "name": "Gençlik Kolektifi 3",
+    "clues": [
+      {
+        "text": "Merkezî hesap yerine yerel çekirdekler öne çıkıyor.",
+        "reliability": "High",
+        "type": "network",
+        "rationale": "Çok merkezli yapı."
+      },
+      {
+        "text": "Çevrimiçi/offline akış birbirini tetikliyor.",
+        "reliability": "Medium",
+        "type": "behavioral",
+        "rationale": "Yerel bağ kuvveti."
+      },
+      {
+        "text": "Metin üslubu kişiden kişiye değişiyor.",
+        "reliability": "Medium",
+        "type": "content",
+        "rationale": "Komutsuz çeşitlilik."
+      },
+      {
+        "text": "Görsellerde kişisel cihaz meta verileri farklı.",
+        "reliability": "Low",
+        "type": "operational",
+        "rationale": "Dağınık üretim."
+      },
+      {
+        "text": "Topluluk içi espri/sloganlar devingen.",
+        "reliability": "Low",
+        "type": "content",
+        "rationale": "Organik oluşum."
+      }
+    ]
+  },
+  {
+    "id": "INFL_01",
+    "class_id": "INFL",
+    "class_name": "Kanaat Önderi/Influencer",
+    "name": "Tek Hesap Analist",
+    "clues": [
+      {
+        "text": "Tek/ana hesap üzerinden düzenli canlı yayın/yorum.",
+        "reliability": "High",
+        "type": "behavioral",
+        "rationale": "Kişisel marka ekseni."
+      },
+      {
+        "text": "Kişisel bülten/podcast’e yönlendirme.",
+        "reliability": "Medium",
+        "type": "behavioral",
+        "rationale": "Bağımsız gelir/ekosistem."
+      },
+      {
+        "text": "Sponsorlu içerik etiketleri düzenli.",
+        "reliability": "Medium",
+        "type": "operational",
+        "rationale": "Şeffaf reklam pratiği."
+      },
+      {
+        "text": "Üslup ve görsel tarz özgün/istikrarlı.",
+        "reliability": "Low",
+        "type": "content",
+        "rationale": "Kişisel marka dili."
+      },
+      {
+        "text": "Takipçilerle yorum/DM üzerinden diyalog.",
+        "reliability": "Low",
+        "type": "behavioral",
+        "rationale": "Kitleyle ilişki."
+      }
+    ]
+  },
+  {
+    "id": "INFL_02",
+    "class_id": "INFL",
+    "class_name": "Kanaat Önderi/Influencer",
+    "name": "Saha Gazetecisi Tarzı Vlogger",
+    "clues": [
+      {
+        "text": "Kriz/olay anlarında anlık yayın ve gözlem.",
+        "reliability": "High",
+        "type": "behavioral",
+        "rationale": "Kişisel saha anlatısı."
+      },
+      {
+        "text": "Görüş/yorum içeren uzun video açıklamaları.",
+        "reliability": "Medium",
+        "type": "content",
+        "rationale": "Kişisel perspektif ağırlığı."
+      },
+      {
+        "text": "Marka iş birlikleri dönemsel.",
+        "reliability": "Medium",
+        "type": "operational",
+        "rationale": "Gelir modeli izleri."
+      },
+      {
+        "text": "Tek hesapta çok format (shorts, canlı, post).",
+        "reliability": "Low",
+        "type": "behavioral",
+        "rationale": "Kişisel üretim çeşitliliği."
+      },
+      {
+        "text": "Kişisel hikâye/anekdotlara sık yer veriliyor.",
+        "reliability": "Low",
+        "type": "content",
+        "rationale": "Kişisel anlatı."
+      }
+    ]
+  },
+  {
+    "id": "INFL_03",
+    "class_id": "INFL",
+    "class_name": "Kanaat Önderi/Influencer",
+    "name": "Uzman Köşe Tarzı Yorumcu",
+    "clues": [
+      {
+        "text": "Tek hesapta düzenli analiz dizileri.",
+        "reliability": "High",
+        "type": "behavioral",
+        "rationale": "Süreklilik ve kişisel marka."
+      },
+      {
+        "text": "Kişisel web/bülten abonelik çağrısı.",
+        "reliability": "Medium",
+        "type": "behavioral",
+        "rationale": "Ekosistem kurma."
+      },
+      {
+        "text": "Sponsor/affiliye linkler şeffaf etiketli.",
+        "reliability": "Medium",
+        "type": "operational",
+        "rationale": "Ticarî açıklık."
+      },
+      {
+        "text": "Üslup tanınabilir; mizansen ve görsel şablon sabit.",
+        "reliability": "Low",
+        "type": "content",
+        "rationale": "Kişisel marka dili."
+      },
+      {
+        "text": "Takipçilerle düzenli AMA/SSS oturumları.",
+        "reliability": "Low",
+        "type": "behavioral",
+        "rationale": "Diyalog odaklılık."
+      }
+    ]
+  },
+  {
+    "id": "NEWS_01",
+    "class_id": "NEWS",
+    "class_name": "Bağımsız Gazeteci/Haber",
+    "name": "Yerel Haber Kolektifi",
+    "clues": [
+      {
+        "text": "Haber–yorum ayrımı net; etiketleme mevcut.",
+        "reliability": "High",
+        "type": "content",
+        "rationale": "Editoryal standart."
+      },
+      {
+        "text": "Zaman damgası ve düzeltme notu açık.",
+        "reliability": "Medium",
+        "type": "operational",
+        "rationale": "Şeffaf işleyiş."
+      },
+      {
+        "text": "Belge/mahkeme kaydı bağlantıları veriliyor.",
+        "reliability": "Medium",
+        "type": "content",
+        "rationale": "Kaynak doğrulanabilirliği."
+      },
+      {
+        "text": "Muhabir iletişim/ihbar kanalı açık.",
+        "reliability": "Low",
+        "type": "operational",
+        "rationale": "Hesap verebilirlik."
+      },
+      {
+        "text": "Görsel kanıt açıklamaları eklenmiş.",
+        "reliability": "Low",
+        "type": "content",
+        "rationale": "Kanıt zinciri."
+      }
+    ]
+  },
+  {
+    "id": "NEWS_02",
+    "class_id": "NEWS",
+    "class_name": "Bağımsız Gazeteci/Haber",
+    "name": "Saha Odaklı Haber Grubu",
+    "clues": [
+      {
+        "text": "Saha doğrulaması ve tanık beyanları birlikte.",
+        "reliability": "High",
+        "type": "content",
+        "rationale": "Birincil kaynağa dayanma."
+      },
+      {
+        "text": "Editoryal ilke sayfası ve künye mevcut.",
+        "reliability": "Medium",
+        "type": "operational",
+        "rationale": "Kurumsal şeffaflık."
+      },
+      {
+        "text": "Haber–görüş ayrımı başlıktan itibaren net.",
+        "reliability": "Medium",
+        "type": "content",
+        "rationale": "Etik yayıncılık."
+      },
+      {
+        "text": "Düzeltme/güncelleme geçmişi tutuluyor.",
+        "reliability": "Low",
+        "type": "operational",
+        "rationale": "Hata yönetimi."
+      },
+      {
+        "text": "Bağlantılarda orijinal belge/görsel linkleri.",
+        "reliability": "Low",
+        "type": "content",
+        "rationale": "İzlenebilirlik."
+      }
+    ]
+  },
+  {
+    "id": "NEWS_03",
+    "class_id": "NEWS",
+    "class_name": "Bağımsız Gazeteci/Haber",
+    "name": "Veri Gazeteciliği Takımı",
+    "clues": [
+      {
+        "text": "Haberlerde veri seti ve yöntem açıklaması var.",
+        "reliability": "High",
+        "type": "content",
+        "rationale": "Metodolojik şeffaflık."
+      },
+      {
+        "text": "Görselleştirmeler kaynak ve tarih içeriyor.",
+        "reliability": "Medium",
+        "type": "content",
+        "rationale": "Şeffaflık ve referans."
+      },
+      {
+        "text": "Kaynak çeşitliliği yüksek; resmi/bağımsız karışık.",
+        "reliability": "Medium",
+        "type": "content",
+        "rationale": "Denge arayışı."
+      },
+      {
+        "text": "Düzeltme kutuları belirgin.",
+        "reliability": "Low",
+        "type": "operational",
+        "rationale": "Hesap verebilirlik."
+      },
+      {
+        "text": "Muhabir/analist imzası her haberde var.",
+        "reliability": "Low",
+        "type": "operational",
+        "rationale": "Sorumluluk şeffaflığı."
+      }
+    ]
+  },
+  {
+    "id": "FACT_01",
+    "class_id": "FACT",
+    "class_name": "Doğrulama Kuruluşu",
+    "name": "İddia Kontrol Ekibi 1",
+    "clues": [
+      {
+        "text": "İddia–yöntem–hüküm formatı açıkça kullanılıyor.",
+        "reliability": "High",
+        "type": "content",
+        "rationale": "Doğrulama standartları."
+      },
+      {
+        "text": "Kaynak linkleri geri izlenebilir.",
+        "reliability": "Medium",
+        "type": "content",
+        "rationale": "Kanıt zinciri."
+      },
+      {
+        "text": "Tersine görsel arama ve meta analiz açıklanmış.",
+        "reliability": "Medium",
+        "type": "content",
+        "rationale": "Yöntem şeffaflığı."
+      },
+      {
+        "text": "Sınıflandırma etiketleri (yanlış, bağlam dışı, vb.) var.",
+        "reliability": "Low",
+        "type": "content",
+        "rationale": "Standart etiketleme."
+      },
+      {
+        "text": "Düzeltme/itiraz mekanizması belirtilmiş.",
+        "reliability": "Low",
+        "type": "operational",
+        "rationale": "Hesap verebilirlik."
+      }
+    ]
+  },
+  {
+    "id": "FACT_02",
+    "class_id": "FACT",
+    "class_name": "Doğrulama Kuruluşu",
+    "name": "Açık Kaynak Doğrulama Grubu",
+    "clues": [
+      {
+        "text": "Coğrafi doğrulama ve zaman eşlemesi detaylı anlatılmış.",
+        "reliability": "High",
+        "type": "content",
+        "rationale": "OSINT yöntemi."
+      },
+      {
+        "text": "İz sürme ekran görüntüleri ve linkler veriliyor.",
+        "reliability": "Medium",
+        "type": "content",
+        "rationale": "Şeffaf kanıt."
+      },
+      {
+        "text": "Sözlü kaynaklar ikinci plana atılıp belgeler önceleniyor.",
+        "reliability": "Medium",
+        "type": "content",
+        "rationale": "Belge önceliği."
+      },
+      {
+        "text": "Hükümler sınıflandırma etiketleriyle özetleniyor.",
+        "reliability": "Low",
+        "type": "content",
+        "rationale": "Okur için netlik."
+      },
+      {
+        "text": "Yöntem sayfası ve ekip biyografileri açık.",
+        "reliability": "Low",
+        "type": "operational",
+        "rationale": "Şeffaflık."
+      }
+    ]
+  },
+  {
+    "id": "FACT_03",
+    "class_id": "FACT",
+    "class_name": "Doğrulama Kuruluşu",
+    "name": "Hızlı Kontrol Birimi",
+    "clues": [
+      {
+        "text": "Trend olan iddialara hızlı mini kontroller yayınlıyor.",
+        "reliability": "High",
+        "type": "behavioral",
+        "rationale": "Zaman duyarlı doğrulama."
+      },
+      {
+        "text": "Her maddede kaynak/kanıt linkleri var.",
+        "reliability": "Medium",
+        "type": "content",
+        "rationale": "Kanıt sunumu."
+      },
+      {
+        "text": "Karar ölçütleri (kanıt seviyesi) kısaca açıklanıyor.",
+        "reliability": "Medium",
+        "type": "content",
+        "rationale": "Yöntem prensipleri."
+      },
+      {
+        "text": "‘Doğru’, ‘Kısmen doğru’, ‘Yanlış’ gibi etiketler.",
+        "reliability": "Low",
+        "type": "content",
+        "rationale": "Standart sınıflandırma."
+      },
+      {
+        "text": "Düzeltme talepleri için açık kanal.",
+        "reliability": "Low",
+        "type": "operational",
+        "rationale": "Şeffaf geri bildirim."
+      }
+    ]
+  },
+  {
+    "id": "TNS_01",
+    "class_id": "TNS",
+    "class_name": "Platform Güven/Güvenlik",
+    "name": "Politika Uygulama Ekibi",
+    "clues": [
+      {
+        "text": "Politika güncellemesi sonrası toplu etiketleme yapıldı.",
+        "reliability": "High",
+        "type": "behavioral",
+        "rationale": "Kural uygulama dalgası."
+      },
+      {
+        "text": "Şeffaflık raporunda kaldırılan içerik sayıları yer alıyor.",
+        "reliability": "Medium",
+        "type": "operational",
+        "rationale": "Kurumsal raporlama."
+      },
+      {
+        "text": "Bazı hesaplar askıya alındı/geri yüklendi duyurusu.",
+        "reliability": "Medium",
+        "type": "behavioral",
+        "rationale": "Yaptırım/gözden geçirme."
+      },
+      {
+        "text": "Etiket sonrası erişim düşüşü gözleniyor.",
+        "reliability": "Low",
+        "type": "behavioral",
+        "rationale": "Politika etkisi."
+      },
+      {
+        "text": "Ürün/politika değişiklik notları yayınlandı.",
+        "reliability": "Low",
+        "type": "operational",
+        "rationale": "Kamuya bilgilendirme."
+      }
+    ]
+  },
+  {
+    "id": "TNS_02",
+    "class_id": "TNS",
+    "class_name": "Platform Güven/Güvenlik",
+    "name": "Kural Uygulayıcılar 2",
+    "clues": [
+      {
+        "text": "Topluluk kurallarına aykırı etiketler dalga halinde.",
+        "reliability": "High",
+        "type": "behavioral",
+        "rationale": "Toplu uygulama."
+      },
+      {
+        "text": "Şeffaflık raporlarında politika kırılımı mevcut.",
+        "reliability": "Medium",
+        "type": "operational",
+        "rationale": "Kamu raporlama."
+      },
+      {
+        "text": "Belirli dönemlerde yaptırım pencereleri.",
+        "reliability": "Medium",
+        "type": "behavioral",
+        "rationale": "Planlı tarama."
+      },
+      {
+        "text": "API/developers sayfalarında değişiklik notları.",
+        "reliability": "Low",
+        "type": "operational",
+        "rationale": "Ürün-politika bağı."
+      },
+      {
+        "text": "Etiket metinleri standart ve tekrar eden.",
+        "reliability": "Low",
+        "type": "content",
+        "rationale": "Şablon politika dili."
+      }
+    ]
+  },
+  {
+    "id": "TNS_03",
+    "class_id": "TNS",
+    "class_name": "Platform Güven/Güvenlik",
+    "name": "İçerik Denetim Operasyonu",
+    "clues": [
+      {
+        "text": "Kampanya döneminde genişletilmiş denetim dalgası.",
+        "reliability": "High",
+        "type": "behavioral",
+        "rationale": "Zaman pencereli yaptırım."
+      },
+      {
+        "text": "Kurallara uygunlaştırma tavsiyeleri yayınlandı.",
+        "reliability": "Medium",
+        "type": "operational",
+        "rationale": "Kamuya rehberlik."
+      },
+      {
+        "text": "Şikâyet/itiraz mekanizması işliyor.",
+        "reliability": "Medium",
+        "type": "operational",
+        "rationale": "Yönetişim kanalı."
+      },
+      {
+        "text": "Etiket sonrası dağılımda erişim kaybı.",
+        "reliability": "Low",
+        "type": "behavioral",
+        "rationale": "Uygulama etkisi."
+      },
+      {
+        "text": "Destek makalelerinde örnek vaka metinleri.",
+        "reliability": "Low",
+        "type": "content",
+        "rationale": "Standartlaştırma."
       }
     ]
   }
