@@ -1,114 +1,83 @@
 
-import json
-import random
-import time
+import json, random, time
 from datetime import datetime
 from pathlib import Path
-
 import pandas as pd
 import streamlit as st
 
-# ================================================
-# THEME & PAGE (Light, larger fonts)
-# ================================================
 st.set_page_config(page_title="Bilgi Ekosistemi Oyunu 🎮", layout="wide")
 
-st.markdown(
-    """
-    <style>
-    :root{
-        --bg:#f7fafc;
-        --card:#ffffff;
-        --muted:#4b5563;
-        --text:#111827;
-        --accent:#2563eb;
-        --accent2:#16a34a;
-        --warn:#f59e0b;
-        --danger:#ef4444;
-        --chip:#e5e7eb;
-    }
-    html, body, [data-testid="stAppViewContainer"]{
-        background: var(--bg);
-        color: var(--text);
-        font-size: 18px;
-        line-height: 1.6;
-    }
-    .hero{
-        background: linear-gradient(135deg, rgba(37,99,235,.10), rgba(34,197,94,.10));
-        color: var(--text); padding: 20px 22px; border-radius: 16px;
-        border: 1px solid #e5e7eb; margin-bottom: 14px;
-    }
-    .card{ background: var(--card); border:1px solid #e5e7eb; border-radius:16px; padding:18px; box-shadow: 0 4px 14px rgba(0,0,0,.06); }
-    .pill{ display:inline-block; padding:6px 12px; border-radius:999px; font-size:.95rem; margin-right:6px; }
-    .rel-high{ background:#ecfdf5; color:#065f46; border:1px solid #34d399; }
-    .rel-med{ background:#fffbeb; color:#92400e; border:1px solid #fbbf24; }
-    .rel-low{ background:#fef2f2; color:#991b1b; border:1px solid #fca5a5; }
-    .small{ color: var(--muted); font-size:1rem; }
-    .option-btn button{ width:100%; padding:16px 14px !important; border-radius:14px !important; border:1px solid #e5e7eb !important; font-size:1.05rem !important; }
-    .primary-btn button{ width:100%; padding:18px 16px !important; border-radius:14px !important; background: var(--accent) !important; color:white !important; border:0 !important; font-weight:700 !important; font-size:1.05rem !important;}
-    .ghost-btn button{ width:100%; padding:18px 16px !important; border-radius:14px !important; background: #ffffff !important; color:var(--text) !important; border:1px solid #e5e7eb !important; font-size:1.05rem !important;}
-    .warn-btn button{ width:100%; padding:18px 16px !important; border-radius:14px !important; background: var(--warn) !important; color:black !important; font-weight:700 !important; font-size:1.05rem !important;}
-    .emoji{ font-size:1.4rem; margin-right:.4rem; }
-    .dot{ width:10px; height:10px; display:inline-block; border-radius:999px; background:#e5e7eb; margin-right:6px; border:1px solid #cbd5e1;}
-    .dot.on{ background:#22c55e; }
-    .title{ font-weight:800; font-size:2rem; letter-spacing:.2px; }
-    .score-card .metric{ font-size:1.5rem; font-weight:800; }
-    .score-card .label{ color:#64748b; font-size:.9rem; text-transform:uppercase; letter-spacing:1px; }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+# -------- Light theme CSS, bigger fonts --------
+st.markdown("""
+<style>
+:root{
+  --bg:#f7fafc; --card:#ffffff; --muted:#4b5563; --text:#111827;
+  --accent:#2563eb; --accent2:#16a34a; --warn:#f59e0b; --danger:#ef4444; --chip:#e5e7eb;
+}
+html, body, [data-testid="stAppViewContainer"]{
+  background: var(--bg); color: var(--text);
+  font-size: 18px; line-height: 1.6;
+}
+.hero{ background: linear-gradient(135deg, rgba(37,99,235,.10), rgba(34,197,94,.10));
+  color: var(--text); padding: 20px 22px; border-radius: 16px; border: 1px solid #e5e7eb; margin-bottom: 14px; }
+.card{ background: var(--card); border:1px solid #e5e7eb; border-radius:16px; padding:18px; box-shadow: 0 4px 14px rgba(0,0,0,.06); }
+.pill{ display:inline-block; padding:6px 12px; border-radius:999px; font-size:.95rem; margin-right:6px; }
+.rel-high{ background:#ecfdf5; color:#065f46; border:1px solid #34d399; }
+.rel-med{  background:#fffbeb; color:#92400e; border:1px solid #fbbf24; }
+.rel-low{  background:#fef2f2; color:#991b1b; border:1px solid #fca5a5; }
+.small{ color: var(--muted); font-size:1rem; }
+.option-btn button{ width:100%; padding:16px 14px !important; border-radius:14px !important; border:1px solid #e5e7eb !important; font-size:1.05rem !important; }
+.primary-btn button{ width:100%; padding:18px 16px !important; border-radius:14px !important; background: var(--accent) !important; color:white !important; border:0 !important; font-weight:700 !important; font-size:1.05rem !important;}
+.ghost-btn button{ width:100%; padding:18px 16px !important; border-radius:14px !important; background: #ffffff !important; color:var(--text) !important; border:1px solid #e5e7eb !important; font-size:1.05rem !important;}
+.warn-btn button{ width:100%; padding:18px 16px !important; border-radius:14px !important; background: var(--warn) !important; color:black !important; font-weight:700 !important; font-size:1.05rem !important;}
+.dot{ width:10px; height:10px; display:inline-block; border-radius:999px; background:#e5e7eb; margin-right:6px; border:1px solid #cbd5e1;}
+.dot.on{ background:#22c55e; }
+.title{ font-weight:800; font-size:2rem; letter-spacing:.2px; }
+.score-card .metric{ font-size:1.5rem; font-weight:800; }
+.score-card .label{ color:#64748b; font-size:.9rem; text-transform:uppercase; letter-spacing:1px; }
+</style>
+""", unsafe_allow_html=True)
 
-# ================================================
-# DATA
-# ================================================
+# -------- Data paths & fallbacks --------
 BASE_DIR = Path(__file__).resolve().parent
-DATA_ACTORS = BASE_DIR / "actors.json"
-DATA_CLASSES = BASE_DIR / "classes.json"
+ACTORS_PATH = BASE_DIR / "actors.json"
+CLASSES_PATH = BASE_DIR / "classes.json"
+LOGS_DIR = BASE_DIR / "logs"
+LOGS_DIR.mkdir(parents=True, exist_ok=True)
 
-def _write_minimal_actors_json(path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    minimal = [
-        {
-            "id": "BOT_00",
-            "class_id": "BOT",
-            "class_name": "Bot Ağı",
-            "name": "Bot Ağı (Minimal)",
-            "clues": [
-                {"text": "Aynı metin + link 30 hesapta <2 dk içinde paylaşıldı.", "reliability": "High", "type": "behavioral", "rationale": "Eşzamanlılık otomasyonu işaret eder."},
-                {"text": "Hesapların çoğu aynı hafta açılmış.", "reliability": "Medium", "type": "operational", "rationale": "Toplu kurulum paterni."},
-                {"text": "Gece-gündüz paylaşım temposu sabit.", "reliability": "High", "type": "behavioral", "rationale": "İnsan ritminden bağımsızdır."},
-                {"text": "Yanıtlar kalıp ifadelerden oluşuyor.", "reliability": "Low", "type": "content", "rationale": "Düşük bağlamsal tepki."},
-                {"text": "Biyografiler boş/tek kelime.", "reliability": "Low", "type": "operational", "rationale": "Hızlı kurulum izi."}
-            ]
-        },
-        {
-            "id": "TROLL_00",
-            "class_id": "TROLL",
-            "class_name": "Trol Çiftliği",
-            "name": "Trol Çiftliği (Minimal)",
-            "clues": [
-                {"text": "Hedefe özgü lakap/mem üretiliyor.", "reliability": "Medium", "type": "content", "rationale": "İnsan yaratıcılığı ve bağlam."},
-                {"text": "Uzun yanıt dizileriyle tartışma dağıtılıyor.", "reliability": "High", "type": "behavioral", "rationale": "Etkileşim derinliği yüksek."},
-                {"text": "Vardiya paternleri (akşam/hafta içi) görülüyor.", "reliability": "Medium", "type": "behavioral", "rationale": "Çalışma ritmi izi."},
-                {"text": "Karşı argüman taklidi ve yeniden çerçeveleme.", "reliability": "Medium", "type": "content", "rationale": "Anlık bağlam takibi."},
-                {"text": "Hesap yaşı dağılımı karışık.", "reliability": "Low", "type": "operational", "rationale": "Gerçekçi profil demeti."}
-            ]
-        }
-    ]
-    with path.open("w", encoding="utf-8") as f:
-        json.dump(minimal, f, ensure_ascii=False, indent=2)
+def ensure_defaults():
+    # Create minimal files if not exist
+    if not ACTORS_PATH.exists():
+        minimal = [
+            {"id":"BOT_00","class_id":"BOT","class_name":"Bot Ağı","name":"Bot Ağı (Minimal)",
+             "clues":[
+                {"text":"Aynı metin + link 30 hesapta <2 dk içinde paylaşıldı.","reliability":"High","type":"behavioral","rationale":"Eşzamanlılık otomasyonu işaret eder."},
+                {"text":"Hesapların çoğu aynı hafta açılmış.","reliability":"Medium","type":"operational","rationale":"Toplu kurulum paterni."},
+                {"text":"Gece-gündüz paylaşım temposu sabit.","reliability":"High","type":"behavioral","rationale":"İnsan ritminden bağımsız."},
+                {"text":"Yanıtlar kalıp ifadelerden oluşuyor.","reliability":"Low","type":"content","rationale":"Düşük bağlamsal tepki."},
+                {"text":"Biyografiler boş.","reliability":"Low","type":"operational","rationale":"Hızlı kurulum izi."}
+             ]},
+            {"id":"TROLL_00","class_id":"TROLL","class_name":"Trol Çiftliği","name":"Trol Çiftliği (Minimal)",
+             "clues":[
+                {"text":"Hedefe özgü lakap/mem üretiliyor.","reliability":"Medium","type":"content","rationale":"İnsan yaratıcılığı ve bağlam."},
+                {"text":"Uzun yanıt dizileriyle tartışma dağıtılıyor.","reliability":"High","type":"behavioral","rationale":"Etkileşim derinliği yüksek."},
+                {"text":"Vardiya paternleri görülüyor.","reliability":"Medium","type":"behavioral","rationale":"Çalışma ritmi izi."},
+                {"text":"Karşı argüman taklidi/yeniden çerçeveleme.","reliability":"Medium","type":"content","rationale":"Anlık bağlam takibi."},
+                {"text":"Hesap yaşı dağılımı karışık.","reliability":"Low","type":"operational","rationale":"Gerçekçi profil demeti."}
+             ]}
+        ]
+        ACTORS_PATH.write_text(json.dumps(minimal, ensure_ascii=False, indent=2), encoding="utf-8")
+    if not CLASSES_PATH.exists():
+        CLASSES_PATH.write_text(json.dumps([], ensure_ascii=False, indent=2), encoding="utf-8")
 
-if not DATA_ACTORS.exists():
-    _write_minimal_actors_json(DATA_ACTORS)
+ensure_defaults()
 
-with DATA_ACTORS.open("r", encoding="utf-8") as f:
+with ACTORS_PATH.open("r", encoding="utf-8") as f:
     ACTORS = json.load(f)
-
-if DATA_CLASSES.exists():
-    with DATA_CLASSES.open("r", encoding="utf-8") as f:
+try:
+    with CLASSES_PATH.open("r", encoding="utf-8") as f:
         CLASS_CARDS = json.load(f)
-else:
+except Exception:
     CLASS_CARDS = []
 
 CLASS_ORDER = [
@@ -123,7 +92,6 @@ CLASS_ORDER = [
     ("TNS", "Platform Güven/Güvenlik"),
 ]
 CLASS_NAME = {cid: cname for cid, cname in CLASS_ORDER}
-
 CONFUSABLES = {
     "BOT": ["TROLL", "AGENCY", "GRASS", "INFL"],
     "TROLL": ["BOT", "GRASS", "INFL", "AGENCY"],
@@ -135,21 +103,13 @@ CONFUSABLES = {
     "FACT": ["NEWS", "STATE_MEDIA", "TNS", "AGENCY"],
     "TNS": ["FACT", "STATE_MEDIA", "NEWS", "AGENCY"],
 }
+EMOJI = {"BOT":"🤖","TROLL":"😈","STATE_MEDIA":"🏛️","AGENCY":"🎯","GRASS":"🌱","INFL":"🎤","NEWS":"📰","FACT":"✅","TNS":"🛡️"}
 
-EMOJI = {
-    "BOT":"🤖", "TROLL":"😈", "STATE_MEDIA":"🏛️", "AGENCY":"🎯",
-    "GRASS":"🌱", "INFL":"🎤", "NEWS":"📰", "FACT":"✅", "TNS":"🛡️",
-}
-
-# ================================================
-# HELPERS
-# ================================================
-def rel_chip(level: str) -> str:
+# -------- Helpers --------
+def rel_chip(level:str)->str:
     level = (level or "").lower()
-    if level.startswith("high"):
-        return '<span class="pill rel-high">🟢 High</span>'
-    if level.startswith("med"):
-        return '<span class="pill rel-med">🟠 Medium</span>'
+    if level.startswith("high"): return '<span class="pill rel-high">🟢 High</span>'
+    if level.startswith("med"):  return '<span class="pill rel-med">🟠 Medium</span>'
     return '<span class="pill rel-low">⚪ Low</span>'
 
 def choose_clues_simple(clues):
@@ -158,14 +118,11 @@ def choose_clues_simple(clues):
     lows = [c for c in clues if c.get("reliability") == "Low"]
     rest = [c for c in clues if c not in highs + meds + lows]
     selected = []
-    if highs:
-        selected.append(highs[0])
-    selected.extend(meds[:2])
-    selected.extend(lows[:2])
+    if highs: selected.append(highs[0])
+    selected.extend(meds[:2]); selected.extend(lows[:2])
     pool = highs[1:] + meds[2:] + lows[2:] + rest
     for c in pool:
-        if len(selected) >= 5:
-            break
+        if len(selected) >= 5: break
         selected.append(c)
     return selected[:5]
 
@@ -175,17 +132,14 @@ def init_game():
     st.session_state["used_elimination"] = False
     st.session_state["confidence"] = 70
     st.session_state["explanation"] = None
-
     target = random.choice(ACTORS)
     t_class = target["class_id"]
     conf_class_list = CONFUSABLES.get(t_class, [])
     options = [CLASS_NAME.get(t_class, t_class)] + [CLASS_NAME[c] for c in conf_class_list[:4] if c in CLASS_NAME]
     opts = []
     for o in options:
-        if o not in opts:
-            opts.append(o)
+        if o not in opts: opts.append(o)
     random.shuffle(opts)
-
     st.session_state["target"] = target
     st.session_state["options"] = opts
     st.session_state["selected_guess"] = None
@@ -194,142 +148,94 @@ def init_game():
     st.session_state["start_ts"] = time.time()
 
 def calc_points(correct, clues_revealed):
-    base = 100
-    penalty = 15 * (clues_revealed - 1)
-    early_bonus = 10 * max(0, 5 - clues_revealed) if correct else 0
-    if correct:
-        return max(0, base - penalty + early_bonus)
-    return max(0, base - penalty - 20)
+    base = 100; penalty = 15 * (clues_revealed - 1); early = 10 * max(0, 5 - clues_revealed) if correct else 0
+    return max(0, base - penalty + (early if correct else -20))
 
 def log_outcome(row):
-    logs_dir = BASE_DIR / "logs"
-    logs_dir.mkdir(parents=True, exist_ok=True)
-    log_path = logs_dir / "pilot_log.csv"
+    log_path = LOGS_DIR / "pilot_log.csv"
     df = pd.DataFrame([row])
-    if log_path.exists():
-        df.to_csv(log_path, index=False, mode="a", header=False, encoding="utf-8")
-    else:
-        df.to_csv(log_path, index=False, encoding="utf-8")
+    if log_path.exists(): df.to_csv(log_path, index=False, mode="a", header=False, encoding="utf-8")
+    else: df.to_csv(log_path, index=False, encoding="utf-8")
 
-# ================================================
-# INTRO / CAROUSEL
-# ================================================
+# -------- Intro / Carousel --------
 def init_intro():
     st.session_state.setdefault("phase", "intro")
     st.session_state.setdefault("carousel_idx", 0)
 
 def render_intro():
-    init_intro()
-    n = len(CLASS_CARDS)
+    init_intro(); n = len(CLASS_CARDS)
     st.markdown('<div class="hero"><div class="title">Sınıfları Tanı 📚</div><div class="small">Oklarla gez — hazır olunca Oyuna Başla!</div></div>', unsafe_allow_html=True)
-
     if n == 0:
         st.info("Tanıtım kartları bulunamadı.")
     else:
         idx = st.session_state["carousel_idx"]
-        card = CLASS_CARDS[idx]
-        cid = card.get("id","")
-        emoji = EMOJI.get(cid,"🔎")
-
-        nav_cols = st.columns([1, 6, 1])
-        with nav_cols[0]:
-            if st.button("⟵ Önceki"):
-                st.session_state["carousel_idx"] = (idx - 1) % n
-                st.rerun()
-        with nav_cols[2]:
-            if st.button("Sonraki ⟶"):
-                st.session_state["carousel_idx"] = (idx + 1) % n
-                st.rerun()
-
-        st.markdown(f"### {emoji} {card.get('name')}  <span class='small'>({idx+1}/{n})</span>", unsafe_allow_html=True)
+        card = CLASS_CARDS[idx]; cid = card.get("id",""); emo = EMOJI.get(cid,"🔎")
+        nav = st.columns([1,6,1])
+        with nav[0]:
+            if st.button("⟵ Önceki"): st.session_state["carousel_idx"] = (idx - 1) % n; st.rerun()
+        with nav[2]:
+            if st.button("Sonraki ⟶"): st.session_state["carousel_idx"] = (idx + 1) % n; st.rerun()
+        st.markdown(f"### {emo} {card.get('name')}  <span class='small'>({idx+1}/{n})</span>", unsafe_allow_html=True)
         st.markdown(f"<div class='card'>{card.get('summary','')}</div>", unsafe_allow_html=True)
-
         c1, c2 = st.columns(2)
         with c1:
             st.markdown("**Ayırt Edici Sinyaller**")
-            for s in card.get("key_signals", []):
-                st.markdown(f"- {s}")
+            for s in card.get("key_signals", []): st.markdown(f"- {s}")
         with c2:
             st.markdown("**Örnek İpuçları**")
-            for s in card.get("example_clues", []):
-                st.markdown(f"- {s}")
-
+            for s in card.get("example_clues", []): st.markdown(f"- {s}")
         st.markdown("---")
-        dotcols = st.columns(min(n,10))
+        dots = st.columns(min(n,10))
         for i in range(min(n,10)):
-            with dotcols[i]:
+            with dots[i]:
                 on = "on" if i == idx else ""
                 st.markdown(f"<span class='dot {on}'></span>", unsafe_allow_html=True)
-
     st.markdown("---")
     c1, c2, c3 = st.columns(3)
     with c1:
         st.markdown('<div class="primary-btn">', unsafe_allow_html=True)
-        if st.button("🎮 Oyuna Başla"):
-            st.session_state["phase"] = "play"
-            init_game()
-            st.rerun()
+        if st.button("🎮 Oyuna Başla"): st.session_state["phase"] = "play"; init_game(); st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
     with c2:
         st.markdown('<div class="ghost-btn">', unsafe_allow_html=True)
-        if st.button("⏭️ Tanıtımı Atla"):
-            st.session_state["phase"] = "play"
-            init_game()
-            st.rerun()
+        if st.button("⏭️ Tanıtımı Atla"): st.session_state["phase"] = "play"; init_game(); st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
     with c3:
         st.markdown('<div class="ghost-btn">', unsafe_allow_html=True)
-        if st.button("📜 Kuralları Gör"):
-            st.session_state["phase"] = "rules"
-            st.rerun()
+        if st.button("📜 Kuralları Gör"): st.session_state["phase"] = "rules"; st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
 
-# ================================================
-# RULES
-# ================================================
+# -------- Rules --------
 def render_rules():
     st.markdown('<div class="hero"><div class="title">Kurallar 📜</div><div class="small">Kısa ve net.</div></div>', unsafe_allow_html=True)
-    with st.container():
-        st.markdown("#### Nasıl Oynanır?")
-        st.markdown("- Başta **tek bir hedef aktör** seçilir.")
-        st.markdown("- En fazla **5 ipucu** açabilirsin (sıra: **1 High → 2 Medium → 2 Low**).")
-        st.markdown("- Sınıf butonuna bas, **Tahmin et** de.")
-        st.markdown("- **Joker:** Bir kez “Yanlış sınıfı ele (−15)”.")
-        st.markdown("#### Skor")
-        st.code("Tur Puanı = 100 − 15×(ek ipucu)\nErken Doğru Bonus = 10 × (kalan ipucu)\nYanlış: Tur Puanı − 20", language="text")
-        st.markdown("Örnek: 2. ipucunda doğru → **115** puan.")
-        st.markdown("#### Not")
-        st.markdown("- Gerçek isim yok; sadece **tipler** var.")
-
+    st.markdown("#### Nasıl Oynanır?")
+    st.markdown("- Başta **tek bir hedef aktör** seçilir.")
+    st.markdown("- En fazla **5 ipucu** açabilirsin (sıra: **1 High → 2 Medium → 2 Low**).")
+    st.markdown("- Sınıf butonuna bas, **Tahmin et** de.")
+    st.markdown("- **Joker:** Bir kez “Yanlış sınıfı ele (−15)”.")
+    st.markdown("#### Skor")
+    st.code("Tur Puanı = 100 − 15×(ek ipucu)\nErken Doğru Bonus = 10 × (kalan ipucu)\nYanlış: Tur Puanı − 20", language="text")
+    st.markdown("Örnek: 2. ipucunda doğru → **115** puan.")
+    st.markdown("#### Not")
+    st.markdown("- Gerçek isim yok; sadece **tipler** var.")
     c1, c2 = st.columns(2)
     with c1:
         st.markdown('<div class="ghost-btn">', unsafe_allow_html=True)
-        if st.button("⬅️ Tanıtıma Dön"):
-            st.session_state["phase"] = "intro"
-            st.rerun()
+        if st.button("⬅️ Tanıtıma Dön"): st.session_state["phase"] = "intro"; st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
     with c2:
         st.markdown('<div class="primary-btn">', unsafe_allow_html=True)
-        if st.button("🎮 Oyuna Başla"):
-            st.session_state["phase"] = "play"
-            init_game()
-            st.rerun()
+        if st.button("🎮 Oyuna Başla"): st.session_state["phase"] = "play"; init_game(); st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
 
-# ================================================
-# PHASE
-# ================================================
+# -------- Phase gate --------
 st.session_state.setdefault("phase", "intro")
 if st.session_state["phase"] == "intro":
-    render_intro()
-    st.stop()
+    render_intro(); st.stop()
 if st.session_state["phase"] == "rules":
-    render_rules()
-    st.stop()
+    render_rules(); st.stop()
 
-# ================================================
-# PLAY
-# ================================================
+# -------- Play --------
 if "target" not in st.session_state:
     init_game()
 
@@ -339,8 +245,15 @@ clues = st.session_state["clues_all"]
 revealed = st.session_state["clues_revealed"]
 options = st.session_state["options"]
 
-# Header
 st.markdown('<div class="hero"><div class="title">Tahmin Zamanı 🕵️‍♀️</div><div class="small">İpucuna bak, akıllıca seç!</div></div>', unsafe_allow_html=True)
+
+# restart control (top-right)
+ctrl1, ctrl2 = st.columns([3,1])
+with ctrl2:
+    st.markdown('<div class="ghost-btn">', unsafe_allow_html=True)
+    if st.button("🔄 Yeniden Başlat"):
+        init_game(); st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # Score & progress
 s1, s2, s3 = st.columns([1,1,2])
@@ -353,19 +266,15 @@ with s3:
     st.caption("Güven (%): 50 / 70 / 90 — sadece kayıt için")
     b1, b2, b3 = st.columns(3)
     with b1:
-        if st.button("50"):
-            st.session_state["confidence"] = 50
+        if st.button("50"): st.session_state["confidence"] = 50
     with b2:
-        if st.button("70"):
-            st.session_state["confidence"] = 70
+        if st.button("70"): st.session_state["confidence"] = 70
     with b3:
-        if st.button("90"):
-            st.session_state["confidence"] = 90
+        if st.button("90"): st.session_state["confidence"] = 90
     st.caption(f"Seçili: {st.session_state['confidence']}%")
 
 left, right = st.columns([2,1])
 
-# LEFT: clues + actions
 with left:
     st.markdown("#### İpuçları")
     for i, clue in enumerate(clues[:revealed], start=1):
@@ -378,8 +287,7 @@ with left:
             st.markdown('<div class="ghost-btn">', unsafe_allow_html=True)
             if st.button("➕ Bir ipucu daha aç"):
                 if st.session_state["clues_revealed"] < min(5, len(clues)):
-                    st.session_state["clues_revealed"] += 1
-                    st.rerun()
+                    st.session_state["clues_revealed"] += 1; st.rerun()
             st.markdown('</div>', unsafe_allow_html=True)
         with a2:
             st.markdown('<div class="primary-btn">', unsafe_allow_html=True)
@@ -390,7 +298,6 @@ with left:
                     guess_name = st.session_state["selected_guess"]
                     correct = (guess_name == true_class_name)
                     duration = time.time() - st.session_state["start_ts"]
-
                     if correct:
                         pts = calc_points(True, st.session_state["clues_revealed"])
                         st.session_state["score"] += pts
@@ -409,10 +316,9 @@ with left:
                             "duration_sec": round(duration, 2),
                         }
                         log_outcome(row)
-                        st.balloons()
-                        st.success(f"Doğru! 🎉 +{pts} puan")
+                        st.balloons(); st.success(f"Doğru! 🎉 +{pts} puan")
                     else:
-                        # Wrong guess: don't end, don't reveal. Penalize and remove option.
+                        # wrong guess: no reveal, continue
                         st.session_state["score"] = max(0, st.session_state.get("score", 0) - 20)
                         pts = -20
                         row = {
@@ -431,46 +337,47 @@ with left:
                         log_outcome(row)
                         st.session_state["options"] = [o for o in st.session_state["options"] if o != guess_name]
                         st.session_state["selected_guess"] = None
-                        st.warning("Yanlış tahmin. Devam et! Bu seçenek elendi.")
+                        st.warning("Yanlış tahmin. Devam! Bu seçenek elendi.")
             st.markdown('</div>', unsafe_allow_html=True)
     else:
         st.success(f"Oyun bitti. Toplam skor: **{st.session_state['score']}**")
+        col_go1, col_go2 = st.columns([1,1])
+        with col_go1:
+            st.markdown('<div class="primary-btn">', unsafe_allow_html=True)
+            if st.button("🔁 Tekrar Oyna"): init_game(); st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
+        with col_go2:
+            st.markdown('<div class="ghost-btn">', unsafe_allow_html=True)
+            if st.button("🔄 Yeniden Başlat"): init_game(); st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
         if st.session_state["clues_revealed"] < len(clues):
             with st.expander("Açılmayan ipuçlarını gör"):
                 for i, clue in enumerate(clues[revealed:], start=revealed+1):
                     chip = rel_chip(clue.get("reliability",""))
                     st.markdown(f"<div class='card'><b>İpucu {i}:</b> {clue.get('text','')}<div class='small' style='margin-top:6px;'>{chip}</div></div>", unsafe_allow_html=True)
 
-# RIGHT: options + tools
 with right:
     st.markdown("#### Sınıf Seçimi")
     st.caption("Kararını en çok hangi sinyal etkiledi? (log)")
     st.session_state["explanation"] = st.radio("Sinyal", ["Davranış","Ağ","Operasyonel","İçerik"], index=None, horizontal=True)
-
-    rows = []
-    row = []
+    # tiled class buttons with emoji
+    rows, row = [], []
     for i, opt in enumerate(options, start=1):
         row.append(opt)
-        if len(row) == 3 or i == len(options):
-            rows.append(row)
-            row = []
+        if len(row) == 3 or i == len(options): rows.append(row); row = []
     for row in rows:
         cols = st.columns(len(row))
         for c, opt in zip(cols, row):
             with c:
                 code = None
-                for k, v in CLASS_NAME.items():
-                    if v == opt:
-                        code = k
-                        break
-                emo = EMOJI.get(code, "🔎")
+                for k,v in CLASS_NAME.items():
+                    if v == opt: code = k; break
+                emo = {"BOT":"🤖","TROLL":"😈","STATE_MEDIA":"🏛️","AGENCY":"🎯","GRASS":"🌱","INFL":"🎤","NEWS":"📰","FACT":"✅","TNS":"🛡️"}.get(code,"🔎")
                 st.markdown('<div class="option-btn">', unsafe_allow_html=True)
-                if st.button(f"{emo} {opt}"):
-                    st.session_state["selected_guess"] = opt
+                if st.button(f"{emo} {opt}"): st.session_state["selected_guess"] = opt
                 st.markdown('</div>', unsafe_allow_html=True)
     sel = st.session_state.get("selected_guess")
     st.caption(f"Seçili sınıf: {sel if sel else '—'}")
-
     st.markdown("---")
     if not st.session_state["game_over"] and not st.session_state.get("used_elimination") and len(options) > 2:
         st.markdown('<div class="warn-btn">', unsafe_allow_html=True)
@@ -485,4 +392,4 @@ with right:
         st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown("---")
-st.caption("Genç dostu arayüz · tipoloji odaklı içerik · gizlilik duyarlı")
+st.caption("Açık tema · büyük punto · tipoloji odaklı")
