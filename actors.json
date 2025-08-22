@@ -1,0 +1,78 @@
+[
+  {
+    "id": "BOT_00",
+    "class_id": "BOT",
+    "class_name": "Bot Ağı",
+    "name": "Bot Ağı (Minimal)",
+    "clues": [
+      {
+        "text": "Aynı metin + link 30 hesapta <2 dk içinde paylaşıldı.",
+        "reliability": "High",
+        "type": "behavioral",
+        "rationale": "Eşzamanlılık otomasyonu işaret eder."
+      },
+      {
+        "text": "Hesapların çoğu aynı hafta açılmış.",
+        "reliability": "Medium",
+        "type": "operational",
+        "rationale": "Toplu kurulum paterni."
+      },
+      {
+        "text": "Gece-gündüz paylaşım temposu sabit.",
+        "reliability": "High",
+        "type": "behavioral",
+        "rationale": "İnsan ritminden bağımsızdır."
+      },
+      {
+        "text": "Yanıtlar kalıp ifadelerden oluşuyor.",
+        "reliability": "Low",
+        "type": "content",
+        "rationale": "Düşük bağlamsal tepki."
+      },
+      {
+        "text": "Biyografiler boş/tek kelime.",
+        "reliability": "Low",
+        "type": "operational",
+        "rationale": "Hızlı kurulum izi."
+      }
+    ]
+  },
+  {
+    "id": "TROLL_00",
+    "class_id": "TROLL",
+    "class_name": "Trol Çiftliği",
+    "name": "Trol Çiftliği (Minimal)",
+    "clues": [
+      {
+        "text": "Hedefe özgü lakap/mem üretiliyor.",
+        "reliability": "Medium",
+        "type": "content",
+        "rationale": "İnsan yaratıcılığı ve bağlam."
+      },
+      {
+        "text": "Uzun yanıt dizileriyle tartışma dağıtılıyor.",
+        "reliability": "High",
+        "type": "behavioral",
+        "rationale": "Etkileşim derinliği yüksek."
+      },
+      {
+        "text": "Vardiya paternleri (akşam/hafta içi) görülüyor.",
+        "reliability": "Medium",
+        "type": "behavioral",
+        "rationale": "Çalışma ritmi izi."
+      },
+      {
+        "text": "Karşı argüman taklidi ve yeniden çerçeveleme.",
+        "reliability": "Medium",
+        "type": "content",
+        "rationale": "Anlık bağlam takibi."
+      },
+      {
+        "text": "Hesap yaşı dağılımı karışık.",
+        "reliability": "Low",
+        "type": "operational",
+        "rationale": "Gerçekçi profil demeti."
+      }
+    ]
+  }
+]
