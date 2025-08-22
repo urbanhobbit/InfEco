@@ -382,35 +382,59 @@ with left:
             st.markdown('</div>', unsafe_allow_html=True)
         with a2:
             st.markdown('<div class="primary-btn">', unsafe_allow_html=True)
-            if st.button("✅ Tahmin et"):
-                if st.session_state.get("selected_guess") is None:
-                    st.warning("Önce bir sınıf seç.")
-                else:
-                    guess_name = st.session_state["selected_guess"]
-                    correct = (guess_name == true_class_name)
-                    pts = calc_points(correct, st.session_state["clues_revealed"])
-                    st.session_state["score"] += pts
-                    st.session_state["game_over"] = True
-                    duration = time.time() - st.session_state["start_ts"]
-                    row = {
-                        "timestamp": datetime.utcnow().isoformat(),
-                        "target_actor_id": target.get("id"),
-                        "target_class": true_class_name,
-                        "guess_class": guess_name,
-                        "correct": int(correct),
-                        "clues_revealed": st.session_state["clues_revealed"],
-                        "confidence": st.session_state["confidence"],
-                        "explanation": st.session_state.get("explanation"),
-                        "used_elimination": int(st.session_state.get("used_elimination", False)),
-                        "points": pts,
-                        "duration_sec": round(duration, 2),
-                    }
-                    log_outcome(row)
-                    if correct:
-                        st.balloons()
-                        st.success(f"Doğru! 🎉 +{pts} puan")
-                    else:
-                        st.error(f"Yanlış. Doğru sınıf: **{true_class_name}** · +{pts}")
+            
+if st.button("✅ Tahmin et"):
+    if st.session_state.get("selected_guess") is None:
+        st.warning("Önce bir sınıf seç.")
+    else:
+        guess_name = st.session_state["selected_guess"]
+        correct = (guess_name == true_class_name)
+        duration = time.time() - st.session_state["start_ts"]
+
+        if correct:
+            pts = calc_points(True, st.session_state["clues_revealed"])
+            st.session_state["score"] += pts
+            st.session_state["game_over"] = True
+            row = {
+                "timestamp": datetime.utcnow().isoformat(),
+                "target_actor_id": target.get("id"),
+                "target_class": true_class_name,
+                "guess_class": guess_name,
+                "correct": 1,
+                "clues_revealed": st.session_state["clues_revealed"],
+                "confidence": st.session_state["confidence"],
+                "explanation": st.session_state.get("explanation"),
+                "used_elimination": int(st.session_state.get("used_elimination", False)),
+                "points": pts,
+                "duration_sec": round(duration, 2),
+            }
+            log_outcome(row)
+            st.balloons()
+            st.success(f"Doğru! 🎉 +{pts} puan")
+        else:
+            # WRONG GUESS: do NOT end game, do NOT reveal answer.
+            # Apply a flat -20 penalty, remove the chosen option, let player continue.
+            st.session_state["score"] = max(0, st.session_state.get("score", 0) - 20)
+            pts = -20
+            row = {
+                "timestamp": datetime.utcnow().isoformat(),
+                "target_actor_id": target.get("id"),
+                "target_class": true_class_name,
+                "guess_class": guess_name,
+                "correct": 0,
+                "clues_revealed": st.session_state["clues_revealed"],
+                "confidence": st.session_state["confidence"],
+                "explanation": st.session_state.get("explanation"),
+                "used_elimination": int(st.session_state.get("used_elimination", False)),
+                "points": pts,
+                "duration_sec": round(duration, 2),
+            }
+            log_outcome(row)
+            # Remove wrong option and reset selection
+            st.session_state["options"] = [o for o in st.session_state["options"] if o != guess_name]
+            st.session_state["selected_guess"] = None
+            st.warning("Yanlış tahmin. Devam et! Bu seçenek elendi.")
+
             st.markdown('</div>', unsafe_allow_html=True)
     else:
         st.success(f"Oyun bitti. Toplam skor: **{st.session_state['score']}**")
