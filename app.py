@@ -17,42 +17,46 @@ st.set_page_config(page_title="Bilgi Ekosistemi Oyunu 🎮", layout="wide")
 st.markdown(
     """
     <style>
-    :root{
-        --bg:#0f172a;
-        --card:#111827;
-        --muted:#94a3b8;
-        --text:#e5e7eb;
-        --accent:#8b5cf6;
-        --accent2:#22c55e;
-        --warn:#f59e0b;
-        --danger:#ef4444;
-        --chip:#1f2937;
-    }
-    html, body, [data-testid="stAppViewContainer"]{
-        background: radial-gradient(1200px 600px at 10% 10%, #1f2937 0%, #0f172a 60%) fixed;
-        color: var(--text);
-    }
-    .hero{
-        background: linear-gradient(135deg, rgba(139,92,246,.9), rgba(34,197,94,.9));
-        color:white; padding: 18px 22px; border-radius: 16px; 
-        box-shadow: 0 10px 30px rgba(0,0,0,.3); margin-bottom: 14px;
-    }
-    .card{ background: var(--card); border:1px solid #1f2937; border-radius:16px; padding:16px; box-shadow: 0 6px 18px rgba(0,0,0,.2); }
-    .pill{ display:inline-block; padding:4px 10px; border-radius:999px; font-size:.85rem; margin-right:6px; }
-    .rel-high{ background:#052e16; color:#bbf7d0; border:1px solid #16a34a; }
-    .rel-med{ background:#341b05; color:#fed7aa; border:1px solid #f59e0b; }
-    .rel-low{ background:#3b0a0a; color:#fecaca; border:1px solid #ef4444; }
-    .small{ color: var(--muted); font-size:.9rem; }
-    .option-btn button{ width:100%; padding:14px 12px !important; border-radius:14px !important; border:1px solid #374151 !important; }
-    .primary-btn button{ width:100%; padding:16px 14px !important; border-radius:14px !important; background: var(--accent) !important; color:white !important; border:0 !important; font-weight:700 !important; }
-    .ghost-btn button{ width:100%; padding:16px 14px !important; border-radius:14px !important; background: #0b1220 !important; color:#e5e7eb !important; border:1px solid #334155 !important; }
-    .warn-btn button{ width:100%; padding:16px 14px !important; border-radius:14px !important; background: var(--warn) !important; color:black !important; font-weight:700 !important; }
-    .emoji{ font-size:1.2rem; margin-right:.4rem; }
-    .dot{ width:10px; height:10px; display:inline-block; border-radius:999px; background:#374151; margin-right:6px;}
-    .dot.on{ background:#22c55e; }
-    .title{ font-weight:800; font-size:1.6rem; letter-spacing:.3px; }
-    .score-card .metric{ font-size:1.3rem; font-weight:800; }
-    .score-card .label{ color:#cbd5e1; font-size:.8rem; text-transform:uppercase; letter-spacing:1px; }
+        :root{
+            --bg:#f7fafc;
+            --card:#ffffff;
+            --muted:#4b5563;
+            --text:#111827;
+            --accent:#2563eb;
+            --accent2:#16a34a;
+            --warn:#f59e0b;
+            --danger:#ef4444;
+            --chip:#e5e7eb;
+        }
+        html, body, [data-testid="stAppViewContainer"]{
+            background: var(--bg);
+            color: var(--text);
+            font-size: 18px;
+            line-height: 1.6;
+        }
+        .hero{
+            background: linear-gradient(135deg, rgba(37,99,235,.10), rgba(34,197,94,.10));
+            color: var(--text); padding: 20px 22px; border-radius: 16px;
+            border: 1px solid #e5e7eb; margin-bottom: 14px;
+        }
+        .card{ background: var(--card); border:1px solid #e5e7eb; border-radius:16px; padding:18px; box-shadow: 0 4px 14px rgba(0,0,0,.06); }
+        .pill{ display:inline-block; padding:6px 12px; border-radius:999px; font-size:.95rem; margin-right:6px; }
+        .rel-high{ background:#ecfdf5; color:#065f46; border:1px solid #34d399; }
+        .rel-med{ background:#fffbeb; color:#92400e; border:1px solid #fbbf24; }
+        .rel-low{ background:#fef2f2; color:#991b1b; border:1px solid #fca5a5; }
+        .small{ color: var(--muted); font-size:1rem; }
+        .option-btn button{ width:100%; padding:16px 14px !important; border-radius:14px !important; border:1px solid #e5e7eb !important; font-size:1.05rem !important; }
+        .primary-btn button{ width:100%; padding:18px 16px !important; border-radius:14px !important; background: var(--accent) !important; color:white !important; border:0 !important; font-weight:700 !important; font-size:1.05rem !important;}
+        .ghost-btn button{ width:100%; padding:18px 16px !important; border-radius:14px !important; background: #ffffff !important; color:var(--text) !important; border:1px solid #e5e7eb !important; font-size:1.05rem !important;}
+        .warn-btn button{ width:100%; padding:18px 16px !important; border-radius:14px !important; background: var(--warn) !important; color:black !important; font-weight:700 !important; font-size:1.05rem !important;}
+        .emoji{ font-size:1.4rem; margin-right:.4rem; }
+        .dot{ width:10px; height:10px; display:inline-block; border-radius:999px; background:#e5e7eb; margin-right:6px; border:1px solid #cbd5e1;}
+        .dot.on{ background:#22c55e; }
+        .title{ font-weight:800; font-size:2rem; letter-spacing:.2px; }
+        .score-card .metric{ font-size:1.5rem; font-weight:800; }
+        .score-card .label{ color:#64748b; font-size:.9rem; text-transform:uppercase; letter-spacing:1px; }
+        /* improve radio buttons spacing */
+        .stRadio > label { font-size: 1.05rem !important; }
     </style>
     """,
     unsafe_allow_html=True,
@@ -62,8 +66,8 @@ st.markdown(
 # DATA
 # ================================================
 BASE_DIR = Path(__file__).resolve().parent
-DATA_ACTORS = BASE_DIR / "data" / "actors.json"
-DATA_CLASSES = BASE_DIR / "data" / "classes.json"
+DATA_ACTORS = BASE_DIR / "actors.json"
+DATA_CLASSES = BASE_DIR / "classes.json"
 
 def _write_minimal_actors_json(path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
