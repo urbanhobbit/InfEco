@@ -1,0 +1,216 @@
+[
+  {
+    "id": "BOT",
+    "name": "Bot Ağı",
+    "summary": "Otomasyonla görünürlük şişirme ve yapay trend yaratma.",
+    "key_signals": [
+      "Saniye-düzeyi eşzamanlı paylaşımlar",
+      "24/7 düz tempo; insan ritminden bağımsız",
+      "Genç hesap yığılması, boş biyografiler",
+      "Aynı metin/URL şablonları"
+    ],
+    "example_clues": [
+      "48 saatte 8 platformda 1200 benzer gönderi.",
+      "Hesapların %70’i aynı gün açılmış."
+    ],
+    "confusables": [
+      "Trol Çiftliği",
+      "Kampanya Ajansı",
+      "Gönüllü Topluluk"
+    ],
+    "discriminants": [
+      "Doğal dil çeşitliliği düşüktür",
+      "Diyalog derinliği zayıftır"
+    ]
+  },
+  {
+    "id": "TROLL",
+    "name": "Trol Çiftliği",
+    "summary": "İnsan koordine ikna/itibar aşındırma; tartışmayı raydan çıkarma.",
+    "key_signals": [
+      "İroni/argo ve hedefe özgü mem üretimi",
+      "Uzun yanıt dizileri, kışkırtma",
+      "Vardiya paternleri (akşam/hafta içi yoğunluk)",
+      "Bağlamsal karşı-argüman üretimi"
+    ],
+    "example_clues": [
+      "Aynı grup dakikalar içinde mem varyantı üretiyor.",
+      "Karşı argümanlar taklit edilip yeniden çerçeveleniyor."
+    ],
+    "confusables": [
+      "Bot Ağı",
+      "Gönüllü Topluluk",
+      "Influencer"
+    ],
+    "discriminants": [
+      "Doğal dil ve mizah çeşitliliği yüksektir",
+      "Diyalog derinliği fazladır"
+    ]
+  },
+  {
+    "id": "STATE_MEDIA",
+    "name": "Devlet Destekli Medya",
+    "summary": "Resmî/yarı-resmî anlatı; kurumsal yayıncılık.",
+    "key_signals": [
+      "Künye ve sahiplik beyanı",
+      "Stüdyo üretimli içerikler",
+      "Resmî kaynaklara yüksek bağımlılık",
+      "Çok kanallı eşgüdüm"
+    ],
+    "example_clues": [
+      "Editoryal kurul kamu teyidiyle listelenmiş.",
+      "Uluslararası edisyonlarla eşgüdüm var."
+    ],
+    "confusables": [
+      "Bağımsız Haber",
+      "Doğrulama",
+      "T&S"
+    ],
+    "discriminants": [
+      "Kurumsal statü ve editoryal hiyerarşi",
+      "Resmî içerik ağırlığı"
+    ]
+  },
+  {
+    "id": "AGENCY",
+    "name": "Kampanya Ajansı",
+    "summary": "Aday/parti için performans odaklı iletişim ve mikro-hedefleme.",
+    "key_signals": [
+      "A/B yaratıcı testleri",
+      "Bağış/üyelik sayfalarına trafik",
+      "Sözleşme/ihale izleri",
+      "Performans raporlarıyla optimizasyon"
+    ],
+    "example_clues": [
+      "Aynı görselin 5 varyantı farklı kitlelerde test ediliyor.",
+      "Mikro-hedefleme için ilgi kümeleri kullanılıyor."
+    ],
+    "confusables": [
+      "Gönüllü Topluluk",
+      "Influencer",
+      "Bot Ağı"
+    ],
+    "discriminants": [
+      "KPI ve sözleşme izi",
+      "Tutarlı marka kılavuzu"
+    ]
+  },
+  {
+    "id": "GRASS",
+    "name": "Gönüllü Partizan Topluluk",
+    "summary": "Gevşek koordine, organik taban mobilizasyonu.",
+    "key_signals": [
+      "Yerel etkinlik → çevrimiçi yankı",
+      "Farklı platformlarda farklı sesler",
+      "Merkezî komut izinin zayıflığı",
+      "Organik zamanlama (senkron değil)"
+    ],
+    "example_clues": [
+      "Eylem fotoğraflarıyla eşleşen anlatılar.",
+      "Farklı görsel stiller; şablon uyumu düşük."
+    ],
+    "confusables": [
+      "Trol Çiftliği",
+      "Ajans",
+      "Influencer"
+    ],
+    "discriminants": [
+      "Yerel bağ ve çeşitlilik",
+      "Performans/KPI izinin zayıflığı"
+    ]
+  },
+  {
+    "id": "INFL",
+    "name": "Kanaat Önderi/Influencer",
+    "summary": "Kişisel marka üzerinden siyasal/sosyal yorum.",
+    "key_signals": [
+      "Kişisel hikâyeler, canlı yayın",
+      "Tek/az sayıda ana hesap",
+      "Sponsorlu içerik etiketleri",
+      "Özgün üslup ve format"
+    ],
+    "example_clues": [
+      "Kriz anlarında anlık yayın/analiz.",
+      "Kişisel bülten/podcast’e yönlendirme."
+    ],
+    "confusables": [
+      "Gönüllü Topluluk",
+      "Haber",
+      "Ajans"
+    ],
+    "discriminants": [
+      "Kişisel ağ ve marka odaklılık",
+      "Düzenli takipçi diyaloğu"
+    ]
+  },
+  {
+    "id": "NEWS",
+    "name": "Bağımsız Gazeteci/Haber",
+    "summary": "Haber üretimi ve editoryal standartlara dayalı yayıncılık.",
+    "key_signals": [
+      "Haber-yorum ayrımı",
+      "Düzeltme politikası ve zaman damgaları",
+      "Belge/mahkeme kaydı bağlantıları",
+      "Editoryal ilke beyanı"
+    ],
+    "example_clues": [
+      "Görsel kanıt incelemesi açıklanmış.",
+      "Künye ve iletişim kanalı açık."
+    ],
+    "confusables": [
+      "Devlet Medyası",
+      "Doğrulama"
+    ],
+    "discriminants": [
+      "Bağımsızlık beyanı",
+      "Kaynak şeffaflığı"
+    ]
+  },
+  {
+    "id": "FACT",
+    "name": "Doğrulama Kuruluşu",
+    "summary": "İddia kontrolü; yöntem ve kanıt şeffaflığı.",
+    "key_signals": [
+      "İddia–yöntem–hüküm formatı",
+      "Tersine görsel arama kanıtı",
+      "Sınıflandırma etiketleri",
+      "Düzeltme/itiraz mekanizması"
+    ],
+    "example_clues": [
+      "Yöntem sayfası ve ekip biyografileri açık.",
+      "Kaynak linkleri geri izlenebilir."
+    ],
+    "confusables": [
+      "Bağımsız Haber",
+      "T&S"
+    ],
+    "discriminants": [
+      "Metodoloji şeffaflığı",
+      "Kanıt zinciri sunumu"
+    ]
+  },
+  {
+    "id": "TNS",
+    "name": "Platform Güven/Güvenlik (T&S)",
+    "summary": "Kural koyma/uygulama; etiketleme ve yaptırımlar.",
+    "key_signals": [
+      "Politika güncellemeleri ve toplu etiketleme",
+      "Şeffaflık raporları",
+      "Ürün-politika değişikliği etkileri",
+      "Hesap askı/geri yükleme duyuruları"
+    ],
+    "example_clues": [
+      "Politika güncellemesi sonrası toplu etiketleme.",
+      "Etiketleme sonrası anlatı erişimi düşer."
+    ],
+    "confusables": [
+      "Devlet Medyası",
+      "Doğrulama",
+      "Haber"
+    ],
+    "discriminants": [
+      "Platform düzeyinde yaptırım yetkisi",
+      "Raporlama ve API değişiklikleri"
+    ]
+  }
+]
