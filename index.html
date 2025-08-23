@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>InfECO – Aktör Tahmin Oyunu (Gençlik + Öğrenme + Ses)</title>
+  <style>
+    :root{
+      --bg:#ffffff; --fg:#0f172a; --muted:#64748b;
+      --accent1:#7c3aed; --accent2:#06b6d4; --good:#10b981; --bad:#ef4444; --warn:#f59e0b;
+      --card:#ffffff; --stroke:#e2e8f0; --chip:#f1f5f9;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu}
+    h1{font-size:clamp(24px,3.2vw,32px);margin:0}
+    .wrap{max-width:1100px;margin:0 auto;padding:16px}
+    .toolbar{
+      background:linear-gradient(135deg,rgba(124,58,237,.08),rgba(6,182,212,.08));
+      border:1px solid var(--stroke);border-radius:20px;padding:14px;margin-bottom:16px;
+      display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between
+    }
+    .brand{display:flex;align-items:center;gap:10px}
+    .brand .logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--accent1),var(--accent2));box-shadow:0 6px 16px rgba(124,58,237,.25);display:grid;place-items:center;color:#fff;font-weight:900}
+    .btn{padding:10px 14px;border-radius:14px;border:1px solid var(--stroke);background:#fff;font-weight:700;cursor:pointer;box-shadow:0 2px 0 rgba(15,23,42,.06)}
+    .btn:hover{transform:translateY(-1px)}
+    .btn.primary{background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#fff;border:none;box-shadow:0 6px 16px rgba(124,58,237,.25)}
+    .btn.warn{background:#fffbe6;border-color:#fde68a}
+    .btn.ghost{background:transparent}
+    .switch{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:14px}
+    .switch input{width:18px;height:18px}
+    .card{background:var(--card);border:1px solid var(--stroke);border-radius:20px;box-shadow:0 1px 8px rgba(15,23,42,.04)}
+    .grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+    .clue{height:170px;padding:12px;position:relative;perspective:1000px}
+    .flip{width:100%;height:100%;border-radius:16px;border:1px solid var(--stroke);box-shadow:0 1px 4px rgba(0,0,0,.04);background:var(--card);transform-style:preserve-3d;transition:transform .45s ease}
+    .flip.back{transform:rotateY(180deg)}
+    .face{position:absolute;inset:0;padding:12px;backface-visibility:hidden;display:flex;flex-direction:column}
+    .backface{transform:rotateY(180deg);align-items:center;justify-content:center;color:var(--muted);font-weight:800}
+    .badge{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;border:1px solid var(--stroke);font-size:12px;margin-right:6px;background:#f8fafc}
+    .h{background:#ecfdf5;color:#065f46;border-color:#a7f3d0}
+    .m{background:#fffbeb;color:#92400e;border-color:#fde68a}
+    .l{background:#fef2f2;color:#991b1b;border-color:#fecaca}
+    .actor{display:flex;align-items:center;gap:12px;padding:12px;border-radius:18px;border:1px solid var(--stroke);background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.04);user-select:none}
+    .avatar{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,rgba(124,58,237,.15),rgba(6,182,212,.18));display:grid;place-items:center;font-size:22px}
+    .actor .drag{margin-left:auto;color:#94a3b8;font-size:12px}
+    .actor.sel{outline:3px solid #60a5fa}
+    .guess{height:100px;border:2px dashed #94a3b8;border-radius:18px;display:flex;align-items:center;justify-content:center;color:#475569;margin-top:8px;transition:box-shadow .18s ease, background .18s ease}
+    .shake{animation:shake .12s linear 2}
+    @keyframes shake{0%{transform:translateX(0)}25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-4px)}100%{transform:translateX(0)}}
+    .wrong-pulse{animation:wrongpulse .45s ease-out}
+    @keyframes wrongpulse{0%{box-shadow:0 0 0 0 rgba(239,68,68,.6), inset 0 0 0 0 rgba(239,68,68,.1)}60%{box-shadow:0 0 0 12px rgba(239,68,68,.0), inset 0 0 0 6px rgba(239,68,68,.15)}100%{box-shadow:0 0 0 0 rgba(239,68,68,.0), inset 0 0 0 0 rgba(239,68,68,.0)}}
+    .wrong-overlay{position:fixed;inset:0;pointer-events:none;display:none;align-items:center;justify-content:center}
+    .wrong-overlay.show{display:flex}
+    .wrong-x{width:120px;height:120px;position:relative}
+    .wrong-x:before,.wrong-x:after{content:"";position:absolute;left:50%;top:50%;width:16px;height:120px;background:linear-gradient(180deg,#ef4444,#f87171);border-radius:8px;transform-origin:center}
+    .wrong-x:before{transform:translate(-50%,-50%) rotate(45deg)} .wrong-x:after{transform:translate(-50%,-50%) rotate(-45deg)}
+    .pop{animation:pop .35s ease-out} @keyframes pop{0%{transform:scale(.6);opacity:.0}60%{transform:scale(1.05);opacity:.9}100%{transform:scale(1);opacity:0}}
+    .confetti{pointer-events:none;position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+    .chip{display:inline-block;padding:4px 10px;border-radius:999px;background:var(--chip);color:#334155;font-size:12px;margin-right:6px}
+    .scorebar{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#fff;border:1px solid var(--stroke);border-radius:18px;padding:12px}
+    .progress{display:flex;align-items:center;gap:10px}
+    .dots{display:flex;gap:6px}
+    .dot{width:12px;height:12px;border-radius:999px;background:#e2e8f0}
+    .dot.on{background:linear-gradient(135deg,var(--accent1),var(--accent2))}
+    .corner-cost{position:absolute;right:10px;top:10px;background:#fff;border:1px solid var(--stroke);border-radius:999px;padding:3px 8px;font-size:12px;color:#0f172a}
+    .help{font-size:13px;color:var(--muted)}
+    /* Reduce motion toggle */
+    .rm *{animation:none !important; transition:none !important}
+
+    /* Learn modal */
+    .modal{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
+    .modal.show{display:flex}
+    .modal .box{max-width:680px;width:100%;background:#fff;border:1px solid var(--stroke);border-radius:20px;box-shadow:0 10px 30px rgba(15,23,42,.25);padding:16px}
+    .modal h2{margin:0;font-size:22px}
+    .list{margin:8px 0 0 18px;color:#334155}
+  </style>
+</head>
+<body>
+  <div class="wrap" id="wrap">
+    <div class="toolbar">
+      <div class="brand">
+        <div class="logo">IE</div>
+        <div>
+          <h1>InfECO – Aktör Tahmin Oyunu</h1>
+          <div class="help">Başlamak için <b>Oyuna Başla</b>. Sürükle-bırak ya da Enter ile tahmin et.</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <label class="switch" title="Hareketli efektleri azalt">
+          <input type="checkbox" id="reduceMotion"> Hareketi azalt
+        </label>
+        <label class="switch" title="Ses efektlerini aç/kapat">
+          <input type="checkbox" id="soundOn"> Ses
+        </label>
+        <label class="switch" title="Tur sonu açıklama">
+          <input type="checkbox" id="learnMode"> Öğrenme modu
+        </label>
+        <span class="chip" id="hudRound">Tur 1</span>
+        <span class="chip" id="hudScore">Skor 0</span>
+        <button class="btn" id="btnIntro">Tanıtım</button>
+        <button class="btn" id="btnRules">Kurallar</button>
+        <button class="btn primary" id="btnPlay">Oyuna Başla</button>
+        <button class="btn ghost" id="btnRestart">Sıfırla</button>
+      </div>
+    </div>
+
+    <div id="panel" class="card" style="padding:14px"></div>
+
+    <div id="confetti" class="confetti" style="display:none"></div>
+    <div id="wrongFx" class="wrong-overlay"><div class="wrong-x pop"></div></div>
+
+    <div id="learnModal" class="modal" aria-hidden="true">
+      <div class="box">
+        <h2>“Neden bu aktör?”</h2>
+        <div id="learnBody" class="help" style="margin-top:6px"></div>
+        <div style="margin-top:12px;text-align:right">
+          <button class="btn" id="btnContinue">Devam</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+const CLUE_COST = 10;
+
+const CLASSES=[
+ {id:"BOT",name:"Bot Ağı",emoji:"🤖"},
+ {id:"TROLL",name:"Trol Çiftliği",emoji:"😈"},
+ {id:"STATE_MEDIA",name:"Devlet Destekli Medya",emoji:"🏛️"},
+ {id:"AGENCY",name:"Kampanya Ajansı",emoji:"🎯"},
+ {id:"GRASS",name:"Gönüllü Partizan Topluluk",emoji:"🌱"},
+ {id:"INFL",name:"Kanaat Önderi/Influencer",emoji:"🎤"},
+ {id:"NEWS",name:"Bağımsız Gazeteci/Haber",emoji:"📰"},
+ {id:"FACT",name:"Doğrulama Kuruluşu",emoji:"✅"},
+ {id:"TNS",name:"Platform Güven/Güvenlik",emoji:"🛡️"},
+];
+
+const ACTORS=[
+ {id:"BOT_01",class_id:"BOT",name:"Senkron Bot Kümesi A",clues:[
+  {t:"Aynı metin + URL, 50+ hesapta 1–3 dk içinde paylaşıldı.",r:"H",ra:"Eşzamanlılık"},
+  {t:"%60+ hesap aynı hafta açılmış.",r:"M",ra:"Toplu kurulum"},
+  {t:"Paylaşım temposu 24/7 düz.",r:"M",ra:"İnsan ritmi dışı"},
+  {t:"Biyografiler tek kelime/emoji.",r:"L"},
+  {t:"Kalıp cümleler.",r:"L"},
+ ]},
+ {id:"TROLL_01",class_id:"TROLL",name:"Provokasyon Ekibi Alfa",clues:[
+  {t:"Uzun tartışma dizileri, mevzu dağıtma.",r:"H"},
+  {t:"Vardiya benzeri zamanlama.",r:"M"},
+  {t:"Karşı argüman taklidi.",r:"M"},
+  {t:"Alaycı mem/lakap.",r:"L"},
+  {t:"Hesap yaşları karışık.",r:"L"},
+ ]},
+ {id:"STATE_MEDIA_01",class_id:"STATE_MEDIA",name:"Kamu Yayın Ağı 1",clues:[
+  {t:"Künye ve sahiplik açık.",r:"H"},
+  {t:"Resmî kaynak oranı yüksek.",r:"M"},
+  {t:"Stüdyo üretimli paket içerikler.",r:"M"},
+  {t:"Eşgüdümlü yayın penceresi.",r:"L"},
+  {t:"Editoryal kurul listeli.",r:"L"},
+ ]},
+ {id:"AGENCY_01",class_id:"AGENCY",name:"Performans Ekibi X",clues:[
+  {t:"Reklam kitaplığında 20+ varyant.",r:"H"},
+  {t:"UTM izleme.",r:"M"},
+  {t:"Segmentler sık değişiyor.",r:"M"},
+  {t:"Marka kılavuzu tutarlı.",r:"L"},
+  {t:"Bağış/üyelik çağrıları.",r:"L"},
+ ]},
+ {id:"GRASS_01",class_id:"GRASS",name:"Mahalle İnisiyatifi 1",clues:[
+  {t:"Saha saatleriyle paylaşım örtüşür.",r:"H"},
+  {t:"Üslup platforma göre değişir.",r:"M"},
+  {t:"Merkezî komut yok.",r:"M"},
+  {t:"Farklı telefon kaliteleri.",r:"L"},
+  {t:"Yerel slogan/mizah.",r:"L"},
+ ]},
+ {id:"INFL_01",class_id:"INFL",name:"Tek Hesap Analist",clues:[
+  {t:"Düzenli canlı yayın/yorum.",r:"H"},
+  {t:"Bülten/podcast yönlendirme.",r:"M"},
+  {t:"Sponsor etiketleri.",r:"M"},
+  {t:"Özgün üslup/görsel.",r:"L"},
+  {t:"Yorum/DM diyaloğu.",r:"L"},
+ ]},
+ {id:"NEWS_01",class_id:"NEWS",name:"Yerel Haber Kolektifi",clues:[
+  {t:"Haber–yorum ayrımı net.",r:"H"},
+  {t:"Zaman damgası/düzeltme açık.",r:"M"},
+  {t:"Belge linkleri.",r:"M"},
+  {t:"Muhabir iletişim açık.",r:"L"},
+  {t:"Görsel kanıt açıklamaları.",r:"L"},
+ ]},
+ {id:"FACT_01",class_id:"FACT",name:"İddia Kontrol Ekibi 1",clues:[
+  {t:"İddia–yöntem–hüküm formatı.",r:"H"},
+  {t:"Kaynak linkleri geri izlenebilir.",r:"M"},
+  {t:"Tersine arama/meta analizi.",r:"M"},
+  {t:"Sınıflandırma etiketleri.",r:"L"},
+  {t:"Düzeltme/itiraz kanalı.",r:"L"},
+ ]},
+ {id:"TNS_01",class_id:"TNS",name:"Politika Uygulama Ekibi",clues:[
+  {t:"Politika güncellemesi sonrası toplu etiketleme.",r:"H"},
+  {t:"Şeffaflık raporları.",r:"M"},
+  {t:"Askıya alma/geri yükleme.",r:"M"},
+  {t:"Etiket sonrası erişim düşüşü.",r:"L"},
+  {t:"Değişiklik notları.",r:"L"},
+ ]},
+];
+
+function shuffle(a){return a.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).map(([,x])=>x)}
+function classEmojiById(id){return (CLASSES.find(c=>c.id===id)||{}).emoji||"🔎"}
+function actorById(id){return ACTORS.find(a=>a.id===id)}
+
+let round=1, score=0, usedElim=false, revealed=1, selected=null, options=[], queue=[], target=null, clues5=[];
+
+function chooseClues5(clues){
+  const H=clues.filter(c=>c.r==="H"), M=clues.filter(c=>c.r==="M"), L=clues.filter(c=>c.r==="L");
+  const out=[]; if(H.length) out.push(H[0]); out.push(...M.slice(0,2)); out.push(...L.slice(0,2));
+  const pool=H.slice(1).concat(M.slice(2),L.slice(2)); for(const c of pool){ if(out.length>=5) break; out.push(c); } return out.slice(0,5);
+}
+
+function buildQueue(){ return shuffle(ACTORS.map(a=>a.id)) }
+
+
+function updateHUD(){
+  const hr=document.getElementById('hudRound'); const hs=document.getElementById('hudScore');
+  if(hr) hr.innerHTML = 'Tur <b>'+round+'</b>';
+  if(hs) hs.innerHTML = 'Skor <b>'+score+'</b>';
+}
+
+function pickSixWithTarget(tid){
+  const pool = ACTORS.map(a=>a.id).filter(id=>id!==tid);
+  const pick = shuffle(pool).slice(0,5);
+  pick.push(tid);
+  return shuffle(pick).map(id=>actorById(id).name);
+}
+
+// ---- Audio helpers (WebAudio; default off) ----
+let audioCtx = null;
+function ensureAudio(){ if(!audioCtx){ audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } }
+function isSoundOn(){ const el=document.getElementById('soundOn'); return el && el.checked; }
+function tone(freq=440, dur=0.15, type='sine', gain=0.06){
+  ensureAudio(); const o=audioCtx.createOscillator(); const g=audioCtx.createGain();
+  o.type=type; o.frequency.value=freq; g.gain.value=gain; o.connect(g); g.connect(audioCtx.destination);
+  o.start(); o.stop(audioCtx.currentTime + dur);
+}
+function playSuccess(){
+  if(!isSoundOn()) return;
+  ensureAudio();
+  const now=audioCtx.currentTime;
+  const seq=[440,554,659,880]; // A-B-C#-A5 arpej
+  seq.forEach((f,i)=>{
+    const o=audioCtx.createOscillator(); const g=audioCtx.createGain();
+    o.type='triangle'; o.frequency.value=f; g.gain.value=0.05;
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start(now + i*0.08); o.stop(now + i*0.08 + 0.12);
+  });
+}
+function playError(){
+  if(!isSoundOn()) return;
+  ensureAudio();
+  const now=audioCtx.currentTime;
+  const o=audioCtx.createOscillator(); const g=audioCtx.createGain();
+  o.type='sawtooth'; o.frequency.setValueAtTime(180, now);
+  o.frequency.exponentialRampToValueAtTime(90, now+0.25);
+  g.gain.setValueAtTime(0.06, now); g.gain.exponentialRampToValueAtTime(0.0001, now+0.28);
+  o.connect(g); g.connect(audioCtx.destination); o.start(now); o.stop(now+0.3);
+}
+
+function startRound(prev){
+  updateHUD();
+  const q=(prev && prev.length)? prev.slice() : buildQueue();
+  const nid=q.shift(); const t=actorById(nid);
+  queue=q; target=t; clues5=chooseClues5(t.clues);
+  options = pickSixWithTarget(t.id); // 6 aktör, doğru dahil
+  revealed=1; usedElim=false; selected=null;
+  renderPlay();
+}
+
+function restart(){ score=0; round=1; updateHUD(); startRound(buildQueue()); }
+
+function showWrongFX(){
+  const gz=document.getElementById('guessZone');
+  if(gz){ gz.classList.remove('wrong-pulse'); void gz.offsetWidth; gz.classList.add('wrong-pulse'); }
+  const fx=document.getElementById('wrongFx');
+  fx.classList.add('show');
+  setTimeout(()=>fx.classList.remove('show'), 350);
+}
+
+function eliminateOneActor(){
+  updateHUD();
+  if(usedElim || options.length<=2 || !target) return;
+  const trueName = target.name;
+  const wrongs=options.filter(o=>o!==trueName);
+  if(wrongs.length){
+    const rm=wrongs[Math.floor(Math.random()*wrongs.length)];
+    options=options.filter(o=>o!==rm); usedElim=true; score=Math.max(0, score-15);
+    renderPlay();
+  }
+}
+
+function proceedNextRound(){
+  updateHUD();
+  round += 1;
+  startRound(queue.length? queue : buildQueue());
+}
+
+function showLearnModal(){
+  const modal=document.getElementById('learnModal');
+  const body=document.getElementById('learnBody');
+  const shownClues = clues5.slice(0, revealed).map((c,idx)=>`<li><b>İpucu ${idx+1}:</b> ${c.t} <span class="chip">${c.r==='H'?'High':c.r==='M'?'Medium':'Low'}</span></li>`).join('');
+  body.innerHTML = `
+    <div style="display:flex;align-items:center;gap:10px;margin-top:6px">
+      <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,rgba(124,58,237,.15),rgba(6,182,212,.18));display:grid;place-items:center;font-size:22px">
+        ${classEmojiById(target.class_id)}
+      </div>
+      <div>
+        <div style="font-weight:800">${target.name}</div>
+        <div class="help">Sınıf sinyali: ${CLASSES.find(c=>c.id===target.class_id).name}</div>
+      </div>
+    </div>
+    <div style="margin-top:8px">Bu turda açtığın ipuçları:</div>
+    <ul class="list">${shownClues || '<li>Henüz ek ipucu açmadın.</li>'}</ul>
+    <div class="help" style="margin-top:8px">Bu ipuçları, seçenekler arasında bu aktörü daha olası kıldı.</div>
+  `;
+  modal.classList.add('show');
+  modal.setAttribute('aria-hidden','false');
+  document.getElementById('btnContinue').onclick=()=>{
+    modal.classList.remove('show');
+    modal.setAttribute('aria-hidden','true');
+    proceedNextRound();
+  };
+}
+
+function isLearnMode(){ const el=document.getElementById('learnMode'); return el && el.checked; }
+
+function handleGuess(name){
+  updateHUD();
+  if(!target) return;
+  const correct=(name===target.name);
+  if(correct){
+    score += 100;
+    playSuccess();
+    if(!document.getElementById('reduceMotion').checked){ burstConfetti(); }
+    if(isLearnMode()){ showLearnModal(); }
+    else { proceedNextRound(); }
+  } else {
+    playError();
+    score = Math.max(0, score-20);
+    options = options.filter(o=>o!==name);
+    selected=null;
+    showWrongFX();
+    renderPlay(true);
+  }
+}
+
+function openNextClue(){
+  updateHUD();
+  if(revealed<5){
+    revealed++;
+    score = Math.max(0, score - CLUE_COST); // anında maliyet
+    renderPlay();
+  }
+}
+
+function burstConfetti(){
+  const c=document.getElementById('confetti'); c.innerHTML=''; c.style.display='flex';
+  for(let i=0;i<28;i++){ const d=document.createElement('div'); d.style.cssText='position:absolute;width:8px;height:12px;background:linear-gradient(135deg,var(--accent1),var(--accent2));border-radius:4px;';
+    const x=(Math.random()*80-40), y=(Math.random()*-60-20), r=Math.random()*360;
+    d.animate([{opacity:1,transform:'translate(0,0) rotate(0deg)'},{opacity:0,transform:`translate(${x}px,${y}px) rotate(${r}deg)`}],{duration:1100,easing:'ease-out'});
+    c.appendChild(d);
+  }
+  setTimeout(()=>{c.style.display='none';},1100);
+}
+
+/* -------- Intro (Actors only) -------- */
+function renderIntro(){
+  const p=document.getElementById('panel');
+  let i=0;
+  function update(){
+    const a = ACTORS[i];
+    const clues = a.clues.slice(0,3).map((c,idx)=>`<li><b>İpucu ${idx+1}:</b> ${c.t}</li>`).join('');
+    p.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div style="font-weight:800;font-size:20px">Tanıtım – Aktörler</div>
+        <div style="color:#64748b;font-size:14px">${i+1}/${ACTORS.length}</div>
+      </div>
+      <div class="card" style="margin-top:8px;padding:14px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="avatar">${classEmojiById(a.class_id)}</div>
+          <div style="font-size:20px;font-weight:800">${a.name}</div>
+        </div>
+        <p class="help" style="margin:8px 0 0 0">Örnek sinyaller:</p>
+        <ul style="margin:6px 0 0 18px;color:#334155">${clues}</ul>
+      </div>
+      <div style="margin-top:10px;display:flex;gap:8px">
+        <button class="btn" id="prev">⟵ Önceki</button>
+        <button class="btn" id="next">Sonraki ⟶</button>
+      </div>`;
+    p.querySelector('#prev').onclick=()=>{ i=(i-1+ACTORS.length)%ACTORS.length; update(); };
+    p.querySelector('#next').onclick=()=>{ i=(i+1)%ACTORS.length; update(); };
+  }
+  update();
+}
+
+function renderRules(){
+  const p=document.getElementById('panel');
+  p.innerHTML=`
+    <div style="font-weight:800;font-size:20px">Kurallar</div>
+    <ul style="margin-top:8px;color:#334155">
+      <li>Her turda tek hedef: rastgele bir <b>aktör</b>.</li>
+      <li>Seçenekler: 9 aktörden <b>rastgele 6</b> (doğru dahil).</li>
+      <li>İpucu açma maliyeti: <b>−10 puan</b> (ilk kart açık başlar).</li>
+      <li>Yanlış tahmin: <b>−20</b> ve o kart elenir; doğru cevap açıklanmaz.</li>
+      <li>Doğru tahmin: <b>+100</b>; yeni hedefe geçilir.</li>
+      <li>Bir kez “Yanlış aktörü ele” <b>−15</b>.</li>
+      <li>Klavye: Seçili kartla Enter.</li>
+      <li><b>Öğrenme modu</b> açıksa, doğru tahmin sonrası “Neden bu aktör?” açıklaması çıkar.</li>
+    </ul>`;
+}
+
+function renderPlay(shake=false){
+  const p=document.getElementById('panel');
+  const relBadge = (x)=> x==="H" ? '<span class="badge h">▲ High</span>' : x==="M" ? '<span class="badge m">■ Medium</span>' : '<span class="badge l">● Low</span>';
+
+  // Dots progress for clues
+  const dots = Array.from({length:5}).map((_,i)=>`<span class="dot ${i<revealed?'on':''}"></span>`).join('');
+
+  let cluesHTML="";
+  for(let i=0;i<5;i++){
+    const isRev = i < revealed; const c = clues5[i] || {};
+    cluesHTML += `
+      <div class="clue">
+        <div class="flip ${isRev?'':'back'}" aria-label="İpucu kartı ${i+1}">
+          <div class="face">
+            ${isRev?`
+            <div class="chip">İpucu ${i+1}</div>
+            <div style="margin-top:6px;font-weight:800">${c.t||''}</div>
+            <div style="margin-top:auto">${relBadge(c.r||'L')}</div>
+            `:''}
+            <div class="corner-cost">−${CLUE_COST}</div>
+          </div>
+          <div class="face backface">Kartı Aç</div>
+        </div>
+      </div>`;
+  }
+
+  const optsHTML = options.map((name,idx)=>{
+    const actor = ACTORS.find(a=>a.name===name);
+    return `
+    <div class="actor ${selected===name?'sel':''} ${shake?'shake':''}" data-name="${name}" role="button" aria-label="Aktör ${name}">
+      <div class="avatar">${classEmojiById(actor.class_id)}</div>
+      <div style="font-weight:800">${name}</div>
+      <div class="drag">Sürükle</div>
+    </div>`
+  }).join("");
+
+  p.innerHTML = `
+    <div class="scorebar">
+      <div class="progress">
+        <span class="chip">Tur <b>${round}</b></span>
+        <div class="dots" aria-label="İpucu ilerleme">${dots}</div>
+      </div>
+      <div>Skor: <b>${score}</b></div>
+    </div>
+    <div style="margin-top:12px">
+      <div style="font-weight:800;margin-bottom:6px">İpucu Kartları</div>
+      <div class="grid">${cluesHTML}</div>
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn" id="btnMore">➕ Bir ipucu daha aç (−${CLUE_COST})</button>
+        <button class="btn warn" id="btnElim">🗑️ Yanlış aktörü ele (−15)</button>
+        <span class="help">İpucu ücreti anında skordan düşer.</span>
+      </div>
+    </div>
+    <div style="margin-top:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <div style="font-weight:800">Aktör Kartları (6)</div>
+        <div class="help">Seç ve Enter'a bas veya kartı alta sürükle</div>
+      </div>
+      <div class="grid" id="optGrid">${optsHTML}</div>
+      <div class="guess" id="guessZone">Kartı buraya sürükle ve bırak (tahmin)</div>
+      <div style="margin-top:10px"><button class="btn primary" id="btnGuess">✅ Tahmin Et (Enter)</button></div>
+    </div>`;
+
+  // Flip logic: only next unrevealed costs and opens
+  const flips = p.querySelectorAll('.clue .flip');
+  flips.forEach((el, i)=>{
+    el.addEventListener('click', ()=>{ if(i===revealed){ openNextClue(); } });
+  });
+
+  // Options
+  const optGrid = p.querySelector('#optGrid');
+  optGrid.querySelectorAll('.actor').forEach((el)=>{
+    const name = el.getAttribute('data-name');
+    el.addEventListener('click', ()=>{ selected = name; renderPlay(); });
+    el.setAttribute('draggable','true');
+    el.addEventListener('dragstart', (e)=>{
+      e.dataTransfer.setData('text/plain', name);
+    });
+  });
+
+  const gz = p.querySelector('#guessZone');
+  gz.addEventListener('dragover', (e)=>{ e.preventDefault(); gz.style.background='#eef2ff'; });
+  gz.addEventListener('dragleave', ()=>{ gz.style.background=''; });
+  gz.addEventListener('drop', (e)=>{
+    e.preventDefault(); gz.style.background=''; const n=e.dataTransfer.getData('text/plain'); handleGuess(n);
+  });
+
+  document.getElementById('btnMore').onclick=openNextClue;
+  document.getElementById('btnElim').onclick=eliminateOneActor;
+  document.getElementById('btnGuess').onclick=()=>{ if(selected) handleGuess(selected) };
+
+  window.onkeydown=(e)=>{ if(e.key==='Enter' && selected) handleGuess(selected); };
+}
+
+document.getElementById('btnIntro').onclick=()=>{ updateHUD(); updateHUD();
+renderIntro(); };
+document.getElementById('btnRules').onclick=()=>{ updateHUD(); renderRules(); };
+document.getElementById('btnPlay').onclick=()=>{ restart(); };
+document.getElementById('btnRestart').onclick=()=>{ restart(); };
+
+// Toggles
+document.getElementById('reduceMotion').addEventListener('change', (e)=>{
+  const wrap = document.getElementById('wrap');
+  if(e.target.checked){ wrap.classList.add('rm'); } else { wrap.classList.remove('rm'); }
+});
+
+updateHUD();
+renderIntro();
+</script>
+</body>
+</html>
